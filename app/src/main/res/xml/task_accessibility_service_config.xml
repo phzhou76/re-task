@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Explanation of tags:
+
+    android:accessibilityEventTypes - Lists the events that this service will listen
+        for. Since the service will be inputting gestures and not listening for any
+        events, it's fine to leave this blank. The typeAllMask will cause the service
+        to listen to all events. (OPTIONAL)
+
+    android:accessibilityFeedbackType - Feedback types that the service provides.
+        It's fine to set it to feedbackVisual for now. (REQUIRED)
+
+    android:accessibilityFlags - Set it to flagDefault. (REQUIRED)
+
+    android:canPerformGestures - Requires SDK 24+. This allows the service to send
+        gestures for the user. Set this to true. (REQUIRED)
+
+    android:packageNames - List of apps that the service will listen to and interact
+        with. If this field is empty, then the service will listen to and interact
+        with all applications. (OPTIONAL)
+-->
+<accessibility-service
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:accessibilityEventTypes=""
+        android:accessibilityFeedbackType="feedbackVisual"
+        android:accessibilityFlags="flagDefault"
+        android:canPerformGestures="true"
+        android:notificationTimeout="100"
+        android:packageNames=""/>

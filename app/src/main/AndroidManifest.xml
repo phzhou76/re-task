@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.github.phzhou76.retask">
+
+    <application
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme">
+
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <service
+                android:name=".service.TaskAccessibilityService"
+                android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
+                android:process=":task_process">
+
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService"/>
+            </intent-filter>
+
+            <!-- Configuration setup for the Accessibility Service. -->
+            <meta-data
+                    android:name="android.accessibilityservice"
+                    android:resource="@xml/task_accessibility_service_config"/>
+
+        </service>
+
+        <service android:name=".service.TaskProxyService"
+                 android:process=":task_process"/>
+
+    </application>
+
+</manifest>
