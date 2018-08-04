@@ -15,15 +15,22 @@ class TaskAccessibilityService : AccessibilityService()
             return SHARED_INSTANCE
         }
 
+        /**
+         * Determines if the Accessibility Service is currently bound to the Android
+         * system or not.
+         *
+         * @return True if the Accessibility Service is bound to the system, false
+         *      otherwise.
+         */
         fun isConnected(): Boolean
         {
-            return SHARED_INSTANCE == null
+            return SHARED_INSTANCE != null
         }
     }
 
     /**
-     * This method is called when the Android system binds to the Accessibility
-     * Service.
+     * Called when the Android system binds to the Accessibility Service; enables
+     * the Accessibility Service to be accessed from the static method.
      */
     override fun onServiceConnected()
     {
@@ -32,7 +39,7 @@ class TaskAccessibilityService : AccessibilityService()
     }
 
     /**
-     * This method is called when Android unbinds from the Accessibility Service.
+     * Called when Android unbinds from the Accessibility Service.
      *
      * @param intent The Intent object that was used to bind to this service.
      *

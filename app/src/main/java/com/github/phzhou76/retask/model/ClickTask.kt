@@ -50,7 +50,7 @@ class ClickTask(taskTitle: String, xCoordinate: Float, yCoordinate: Float) : ITa
     )
 
     /**
-     * This method will cause the service to deliver a touch gesture at the assigned
+     * Utilizes the Accessibility Service to deliver a touch gesture at the assigned
      * (x, y) coordinates.
      */
     override fun execute()
@@ -60,8 +60,8 @@ class ClickTask(taskTitle: String, xCoordinate: Float, yCoordinate: Float) : ITa
     }
 
     /**
-     * This method updates the gesture to reflect any changes in the click coordinates
-     * of this task.
+     * Updates the gesture to reflect any changes in the click coordinates of this
+     * task.
      */
     private fun updateGesture()
     {

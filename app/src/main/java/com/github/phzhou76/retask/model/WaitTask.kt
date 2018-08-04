@@ -23,8 +23,7 @@ class WaitTask(taskTitle: String, waitTime: Long): ITask
     )
 
     /**
-     * This method will cause the service to wait for the assigned number of
-     * milliseconds.
+     * Causes the service to wait for the assigned number of milliseconds.
      */
     override fun execute()
     {
