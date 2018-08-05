@@ -5,6 +5,9 @@ import android.content.Intent
 import android.os.IBinder
 import android.os.Messenger
 
+/* TODO Need to place the proxy service on a separate thread from the Accessibility
+ * Service, Accessibility Service can't interrupt proxy service during a wait task.
+ */
 class TaskProxyService : Service()
 {
     /* Messenger that the client Activity sends Messages to. */

@@ -2,6 +2,8 @@ package com.github.phzhou76.retask.service
 
 import android.accessibilityservice.AccessibilityService
 import android.content.Intent
+import android.util.Log
+import android.view.KeyEvent
 import android.view.accessibility.AccessibilityEvent
 
 class TaskAccessibilityService : AccessibilityService()
@@ -73,5 +75,11 @@ class TaskAccessibilityService : AccessibilityService()
     override fun onAccessibilityEvent(accessibilityEvent: AccessibilityEvent?)
     {
         TODO("not implemented")
+    }
+
+    override fun onKeyEvent(event: KeyEvent?): Boolean
+    {
+        Log.d("WHOA", "IT WORKS")
+        return super.onKeyEvent(event)
     }
 }
