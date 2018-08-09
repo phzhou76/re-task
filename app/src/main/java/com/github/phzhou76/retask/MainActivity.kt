@@ -4,17 +4,24 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
-import android.os.*
+import android.os.Bundle
+import android.os.IBinder
+import android.os.Messenger
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
-import com.github.phzhou76.retask.model.ClickTask
-import com.github.phzhou76.retask.model.ITask
-import com.github.phzhou76.retask.model.WaitTask
+import com.github.phzhou76.retask.model.statement.ClickRegionStatement
+import com.github.phzhou76.retask.model.statement.StatementBlock
+import com.github.phzhou76.retask.model.statement.WaitStatement
 import com.github.phzhou76.retask.service.TaskProxyService
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity()
 {
+    companion object
+    {
+        const val KEY_SCRIPT: String = "KEY_SCRIPT"
+        const val KEY_BUNDLE: String = "KEY_BUNDLE"
+    }
+
     private var mIsBound = false
     private var mTaskMessenger: Messenger? = null
     private val mServiceConnection: ServiceConnection = object : ServiceConnection
@@ -53,31 +60,20 @@ class MainActivity : AppCompatActivity()
         setContentView(R.layout.activity_main)
 
         button.setOnClickListener {
+
+            /* Only send script if the Activity is bound to the proxy service. */
             if (mIsBound)
             {
-                val taskList: Array<ITask> = arrayOf(WaitTask("WaitTask", 50000),
-                        ClickTask("ClickTask", 1000.0f, 1000.0f))
+                val statementBlock = StatementBlock()
+                statementBlock.mStatementList.add(WaitStatement(5000, 2500))
+                statementBlock.mStatementList.add(ClickRegionStatement(Pair(100.0f, 100.0f), Pair(1000.0f, 2000.0f)))
 
-                val taskIter = taskList.iterator()
-
-                taskIter.forEach {
-                    Log.d("WHACK", it.mTaskTitle)
-                }
-
-                val message = Message.obtain()
                 val bundle = Bundle()
-                bundle.putParcelableArray("TEST", taskList)
+                bundle.putParcelable(KEY_SCRIPT, statementBlock)
 
-                message.obj = bundle
-
-                try
-                {
-                    mTaskMessenger?.send(message)
-                }
-                catch (e: RemoteException)
-                {
-                    e.printStackTrace()
-                }
+                val scriptIntent = Intent(this, TaskProxyService::class.java)
+                scriptIntent.putExtra(KEY_BUNDLE, bundle)
+                startService(scriptIntent)
             }
         }
     }
@@ -88,6 +84,7 @@ class MainActivity : AppCompatActivity()
 
         val taskIntent = Intent(this, TaskProxyService::class.java)
         bindService(taskIntent, mServiceConnection, Context.BIND_AUTO_CREATE)
+
     }
 
     override fun onStop()

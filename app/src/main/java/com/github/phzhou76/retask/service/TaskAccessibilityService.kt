@@ -30,6 +30,8 @@ class TaskAccessibilityService : AccessibilityService()
         }
     }
 
+    private var mTaskProxyService: TaskProxyService? = null
+
     /**
      * Called when the Android system binds to the Accessibility Service; enables
      * the Accessibility Service to be accessed from the static method.
@@ -66,9 +68,7 @@ class TaskAccessibilityService : AccessibilityService()
 
     /**
      * This method is called by the system when it detects an event that matches
-     * the event(s) specified by the Accessibility Service. For example, if this
-     * Accessibility Service specifies that button clicks are to be captured, any
-     * button click events that occur will cause the system to call this method.
+     * the event(s) specified by the Accessibility Service configuration.
      *
      * @param accessibilityEvent The event that occurred.
      */
@@ -80,6 +80,17 @@ class TaskAccessibilityService : AccessibilityService()
     override fun onKeyEvent(event: KeyEvent?): Boolean
     {
         Log.d("WHOA", "IT WORKS")
+        mTaskProxyService?.stopExecution()
         return super.onKeyEvent(event)
+    }
+
+    fun bindTaskProxyService(taskProxyService: TaskProxyService)
+    {
+        mTaskProxyService = taskProxyService
+    }
+
+    fun unbindTaskProxyService()
+    {
+        mTaskProxyService = null
     }
 }

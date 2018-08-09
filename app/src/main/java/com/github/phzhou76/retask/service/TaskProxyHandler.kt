@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.os.Parcelable
-import com.github.phzhou76.retask.model.ITask
+import android.util.Log
 import java.util.*
 
 class TaskProxyHandler(taskProxyService: TaskProxyService) : Handler()
@@ -28,16 +28,13 @@ class TaskProxyHandler(taskProxyService: TaskProxyService) : Handler()
             val messageBundle: Bundle? = validMessage.obj as? Bundle
 
             messageBundle?.let { validBundle ->
-
-                /* Always need to set the class loader of the bundle before taking any Parcelable contents out. */
-                validBundle.classLoader = Array<ITask>::class.java.classLoader
-                val parcelArray: Array<Parcelable> = validBundle.getParcelableArray("TEST")
-                val taskArray: Array<ITask> = Arrays.copyOf(parcelArray, parcelArray.size, Array<ITask>::class.java)
-
-                val taskIterator = taskArray.iterator()
-                taskIterator.forEach {
-                    it.execute()
-                }
+//
+//                /* Always need to set the class loader of the bundle before taking any Parcelable contents out. */
+//                validBundle.classLoader = Array<ITask>::class.java.classLoader
+//                val parcelArray: Array<Parcelable> = validBundle.getParcelableArray("CLICK")
+//                val taskArray: Array<ITask> = Arrays.copyOf(parcelArray, parcelArray.size, Array<ITask>::class.java)
+//
+//                mTaskProxyService.execute(taskArray)
             }
         }
     }
