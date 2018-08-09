@@ -22,7 +22,7 @@ class WaitStatement(waitTime: Long, waitTimeVariance: Long) : Statement()
             mStatementLabel = updateLabel(value, mWaitTimeVariance)
         }
 
-    /* Variation in wait time. */
+    /* Variation in wait time. Must be less than or equal to mWaitTime. */
     var mWaitTimeVariance: Long = waitTimeVariance
         set(value)
         {
@@ -64,22 +64,14 @@ class WaitStatement(waitTime: Long, waitTimeVariance: Long) : Statement()
     }
 
     /**
-     * Generates a zero value or positive wait time.
+     * Generates a random wait time based on the wait time plus-minus the variance.
      *
-     * @return A randomized wait time that's 0 or greater.
+     * @return A randomized wait time.
      */
     private fun generateWaitTime(): Long
     {
-        /* Possible for the generated wait time to be negative due to variance. */
-        if (mWaitTimeVariance < mWaitTime)
-        {
-            return (mWaitTime - mWaitTimeVariance) +
-                    ThreadLocalRandom.current().nextLong(0, 2 * mWaitTimeVariance + 1)
-        }
-        else
-        {
-            return ThreadLocalRandom.current().nextLong(0, mWaitTime + mWaitTimeVariance)
-        }
+        return (mWaitTime - mWaitTimeVariance) +
+                ThreadLocalRandom.current().nextLong(0, 2 * mWaitTimeVariance + 1)
     }
 
     /**
