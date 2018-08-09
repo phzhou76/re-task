@@ -7,39 +7,52 @@ import android.os.IBinder
 import android.os.Messenger
 import android.util.Log
 import com.github.phzhou76.retask.MainActivity
-import com.github.phzhou76.retask.model.statement.StatementBlock
+import com.github.phzhou76.retask.handler.TaskProxyHandler
+import com.github.phzhou76.retask.model.TaskScript
 
 class TaskProxyService : IntentService("TaskProxyService")
 {
-    private var scriptTask: StatementBlock? = null
-
-    override fun onHandleIntent(intent: Intent?)
+    companion object
     {
-        TaskAccessibilityService.getSharedInstance()?.bindTaskProxyService(this)
-        Log.d("TaskProxyService", "onHandleIntent")
-
-        intent?.let {
-            val bundle: Bundle = it.getBundleExtra(MainActivity.KEY_BUNDLE)
-            bundle.classLoader = StatementBlock::class.java.classLoader
-
-            val statementBlock: StatementBlock? = bundle.getParcelable(MainActivity.KEY_SCRIPT)
-            if (statementBlock != null)
-            {
-                scriptTask = statementBlock
-                statementBlock.execute()
-            }
-        }
-
-        Log.d("TaskProxyService", "Finished script.")
-
-        TaskAccessibilityService.getSharedInstance()?.unbindTaskProxyService()
+        private val TAG: String = TaskProxyService::class.java.simpleName
     }
 
     /* Messenger that the client Activity sends Messages to. */
     private val mMessenger: Messenger = Messenger(TaskProxyHandler(this))
 
+    /* Reference to the TaskScript that this proxy service is running. */
+    private var mTaskScript: TaskScript? = null
+
     /**
-     * This method is called when a client binds to this service.
+     * Handles the intent that was sent to this Intent Service, and executes the
+     * script's contents.
+     *
+     * @param intent Holds the script to be executed.
+     */
+    override fun onHandleIntent(intent: Intent?)
+    {
+        TaskAccessibilityService.getSharedInstance()?.bindTaskProxyService(this)
+
+        Log.d(TAG, "onHandleIntent")
+
+        intent?.let { validIntent ->
+            val bundle: Bundle = validIntent.getBundleExtra(MainActivity.KEY_BUNDLE)
+            bundle.classLoader = TaskScript::class.java.classLoader
+
+            val taskScript: TaskScript? = bundle.getParcelable(MainActivity.KEY_TASK_SCRIPT)
+            taskScript?.let {
+                mTaskScript = it
+                it.execute()
+            }
+        }
+
+        Log.d(TAG, "Finished script.")
+
+        TaskAccessibilityService.getSharedInstance()?.unbindTaskProxyService()
+    }
+
+    /**
+     * Called when a client binds to this service.
      *
      * @param intent The Intent that the client sent to this service.
      *
@@ -51,8 +64,21 @@ class TaskProxyService : IntentService("TaskProxyService")
         return mMessenger.binder
     }
 
+    /**
+     * Stops the execution of the script.
+     */
     fun stopExecution()
     {
-        scriptTask?.stopExecution()
+        mTaskScript?.stopExecution()
+    }
+
+    /**
+     * Checks if the Accessibility Service is connected to the Android system.
+     *
+     * @return True if the Accessibility Service is connected, false otherwise.
+     */
+    fun isAccessibilityConnected(): Boolean
+    {
+        return TaskAccessibilityService.getSharedInstance() != null
     }
 }

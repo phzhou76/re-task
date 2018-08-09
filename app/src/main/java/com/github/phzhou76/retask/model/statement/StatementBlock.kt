@@ -23,6 +23,10 @@ class StatementBlock() : Statement()
         parcel.readList(mStatementList, StatementBlock::class.java.classLoader)
     }
 
+    /**
+     * Stops the execution of the contents of the StatementBlock, and signals
+     * any child Statements to stop execution as well.
+     */
     override fun stopExecution()
     {
         super.stopExecution()
@@ -37,14 +41,15 @@ class StatementBlock() : Statement()
      */
     override fun execute()
     {
-        for(i in 0 until mStatementList.size)
+        for (i in 0 until mStatementList.size)
         {
-            if(mStopExecution)
+            if (mStopExecution)
             {
                 break
             }
 
             Log.d("StatementBlock", mStatementList[i].mStatementLabel)
+
             mStatementList[i].execute()
         }
     }

@@ -10,23 +10,19 @@ class TaskAccessibilityService : AccessibilityService()
 {
     companion object
     {
+        private val TAG: String = TaskAccessibilityService::class.java.simpleName
+
         private var SHARED_INSTANCE: TaskAccessibilityService? = null
 
+        /**
+         * Singleton pattern. Returns a Singleton instance of the Accessibility
+         * Service.
+         *
+         * @return The instance of the Accessibility Service.
+         */
         fun getSharedInstance(): TaskAccessibilityService?
         {
             return SHARED_INSTANCE
-        }
-
-        /**
-         * Determines if the Accessibility Service is currently bound to the Android
-         * system or not.
-         *
-         * @return True if the Accessibility Service is bound to the system, false
-         *      otherwise.
-         */
-        fun isConnected(): Boolean
-        {
-            return SHARED_INSTANCE != null
         }
     }
 
@@ -57,9 +53,9 @@ class TaskAccessibilityService : AccessibilityService()
     }
 
     /**
-     * This method is called when the system wants to interrupt the feedback the
-     * Accessibility Service is providing. Typically, this method will be called
-     * in response to a user action, like moving focus to a different control.
+     * Called when the system wants to interrupt the feedback the Accessibility
+     * Service is providing. Typically, will be called in response to a user action,
+     * like moving focus to a different control.
      */
     override fun onInterrupt()
     {
@@ -67,8 +63,8 @@ class TaskAccessibilityService : AccessibilityService()
     }
 
     /**
-     * This method is called by the system when it detects an event that matches
-     * the event(s) specified by the Accessibility Service configuration.
+     * Called by the system when it detects an event that matches the event(s)
+     * specified by the Accessibility Service configuration.
      *
      * @param accessibilityEvent The event that occurred.
      */
@@ -77,18 +73,33 @@ class TaskAccessibilityService : AccessibilityService()
         TODO("not implemented")
     }
 
+    /**
+     * Called by the system when a device hardware button has been pressed.
+     *
+     * @param event The event that occurred.
+     */
     override fun onKeyEvent(event: KeyEvent?): Boolean
     {
-        Log.d("WHOA", "IT WORKS")
+        Log.d(TAG, "onKeyEvent")
         mTaskProxyService?.stopExecution()
+
         return super.onKeyEvent(event)
     }
 
+    /**
+     * Binds a proxy service to this Accessibility Service so that it can
+     * communicate with the proxy service.
+     *
+     * @param taskProxyService The proxy service to bind with.
+     */
     fun bindTaskProxyService(taskProxyService: TaskProxyService)
     {
         mTaskProxyService = taskProxyService
     }
 
+    /**
+     * Unbinds the proxy service from the Accessibility Service.
+     */
     fun unbindTaskProxyService()
     {
         mTaskProxyService = null
