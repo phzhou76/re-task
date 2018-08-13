@@ -42,6 +42,8 @@ class TaskProxyService : IntentService("TaskProxyService")
             val taskScript: TaskScript? = bundle.getParcelable(MainActivity.KEY_TASK_SCRIPT)
             taskScript?.let {
                 mTaskScript = it
+
+                it.printDebugLog()
                 it.execute()
             }
         }

@@ -9,8 +9,6 @@ import android.util.Log
  */
 class StatementBlock() : Statement()
 {
-    override var mStatementLabel: String = "Statement Block"
-
     var mStatementList: MutableList<Statement> = mutableListOf()
 
     /**
@@ -48,10 +46,15 @@ class StatementBlock() : Statement()
                 break
             }
 
-            Log.d("StatementBlock", mStatementList[i].mStatementLabel)
+            Log.d(TAG, mStatementList[i].toString())
 
             mStatementList[i].execute()
         }
+    }
+
+    override fun toString(): String
+    {
+        return "Statement Block"
     }
 
 
@@ -68,6 +71,8 @@ class StatementBlock() : Statement()
 
     companion object CREATOR : Parcelable.Creator<StatementBlock>
     {
+        private val TAG: String = StatementBlock::class.java.simpleName
+
         override fun createFromParcel(parcel: Parcel): StatementBlock
         {
             return StatementBlock(parcel)

@@ -2,18 +2,26 @@ package com.github.phzhou76.retask.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import android.util.Log
 import com.github.phzhou76.retask.model.statement.StatementBlock
+import com.github.phzhou76.retask.model.value.rvalue.IntValue
+import com.github.phzhou76.retask.model.value.variable.IntVariable
+import com.github.phzhou76.retask.model.value.variable.Variable
 
 class TaskScript() : Parcelable
 {
     /* Hash map of variables' names to their Variable object. */
+    var mVariables: HashMap<String, Variable> = HashMap()
 
     /* Task script contents. */
-    var mTaskScript: StatementBlock? = StatementBlock()
+    var mTaskScript: StatementBlock = StatementBlock()
 
     constructor(parcel: Parcel) : this()
     {
-        mTaskScript = parcel.readParcelable(StatementBlock::class.java.classLoader)
+        readScriptFromParcel(parcel)
+
+        /* TaskScript should be statically accessible in proxy service. */
+        TaskScript.SHARED_INSTANCE = this
     }
 
     /**
@@ -21,7 +29,7 @@ class TaskScript() : Parcelable
      */
     fun stopExecution()
     {
-        mTaskScript?.stopExecution()
+        mTaskScript.stopExecution()
     }
 
     /**
@@ -29,14 +37,67 @@ class TaskScript() : Parcelable
      */
     fun execute()
     {
-        mTaskScript?.execute()
+        Log.d(TAG, "execute")
+        mTaskScript.execute()
+    }
+
+    /**
+     * Logs the value of each Variable and Statement in the task script.
+     */
+    fun printDebugLog()
+    {
+        mVariables.iterator().forEach {
+            it.value.printDebugLog()
+        }
+    }
+
+    /**
+     * Recreates the TaskScript object using data from the Parcel.
+     *
+     * @param parcel The Parcel object that encapsulates the TaskScript data.
+     */
+    private fun readScriptFromParcel(parcel: Parcel)
+    {
+        /* Read Variable hash map and recreate it. */
+        val variableCount: Int = parcel.readInt()
+
+        for (i in 0 until variableCount)
+        {
+            val variableName: String = parcel.readString() ?: "Parcel error"
+            val variable: Variable = parcel.readParcelable(Variable::class.java.classLoader)
+                    ?: IntVariable("Error Variable", IntValue(-1))
+            mVariables[variableName] = variable
+        }
+
+        /* Read script data and recreate it. */
+        mTaskScript = parcel.readParcelable(StatementBlock::class.java.classLoader)
+                ?: StatementBlock()
+    }
+
+    /**
+     * Writes the TaskScript's data to a Parcel.
+     *
+     * @param parcel The Parcel object to write the TaskScript's data to.
+     * @param flags Integer flags that are required for writing Parcelable objects.
+     */
+    private fun writeScriptToParcel(parcel: Parcel, flags: Int)
+    {
+        /* Write Variable hash map to Parcel. */
+        parcel.writeInt(mVariables.size)
+        mVariables.iterator().forEach {
+            parcel.writeString(it.key)
+            parcel.writeParcelable(it.value, flags)
+        }
+
+        /* Write script to Parcel. */
+        parcel.writeParcelable(mTaskScript, flags)
     }
 
 
     /* Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)
     {
-        parcel.writeParcelable(mTaskScript, flags)
+        writeScriptToParcel(parcel, flags)
     }
 
     override fun describeContents(): Int
@@ -46,6 +107,10 @@ class TaskScript() : Parcelable
 
     companion object CREATOR : Parcelable.Creator<TaskScript>
     {
+        private val TAG: String = TaskScript::class.java.simpleName
+
+        private var SHARED_INSTANCE: TaskScript? = null
+
         override fun createFromParcel(parcel: Parcel): TaskScript
         {
             return TaskScript(parcel)
@@ -54,6 +119,17 @@ class TaskScript() : Parcelable
         override fun newArray(size: Int): Array<TaskScript?>
         {
             return arrayOfNulls(size)
+        }
+
+        /**
+         * Singleton implementation. Allows the TaskScript and its Variables to
+         * be accessible once the TaskScript object has been sent to the proxy service.
+         *
+         * @return The instance of TaskScript.
+         */
+        fun getSharedInstance(): TaskScript?
+        {
+            return SHARED_INSTANCE
         }
     }
 }

@@ -14,15 +14,12 @@ import com.github.phzhou76.retask.service.TaskAccessibilityService
  */
 open class ClickStatement(clickCoordinate: Pair<Float, Float>) : Statement()
 {
-    override var mStatementLabel: String = updateLabel(clickCoordinate)
-
     /* Coordinate point to click at. */
     open var mClickCoordinate: Pair<Float, Float> = clickCoordinate
         set(value)
         {
             field = value
             mCoordinateChanged = true
-            mStatementLabel = updateLabel(value)
         }
 
     /* Marks whether or not the gesture description needs to be generated before
@@ -79,17 +76,9 @@ open class ClickStatement(clickCoordinate: Pair<Float, Float>) : Statement()
         mCoordinateChanged = false
     }
 
-    /**
-     * Generates the updated label for the ClickStatement. The method needs to be
-     * called when the mClickCoordinate is updated.
-     *
-     * @param newClickCoordinate The new click coordinate.
-     *
-     * @return The updated label of the ClickStatement.
-     */
-    private fun updateLabel(newClickCoordinate: Pair<Float, Float>): String
+    override fun toString(): String
     {
-        return "Click at: " + newClickCoordinate.toString()
+        return "Click at: " + mClickCoordinate.toString()
     }
 
 

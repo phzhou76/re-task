@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ReTask</string>
+    <string name="parcel_variable_error">Parcel Error: Variable</string>
 </resources>

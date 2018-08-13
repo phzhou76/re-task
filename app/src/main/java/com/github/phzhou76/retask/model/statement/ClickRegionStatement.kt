@@ -14,31 +14,11 @@ import java.util.*
 class ClickRegionStatement(topLeftCoordinate: Pair<Float, Float>,
                            bottomRightCoordinate: Pair<Float, Float>) : ClickStatement(Pair(0.0f, 0.0f))
 {
-    override var mStatementLabel: String = updateLabel(topLeftCoordinate, bottomRightCoordinate)
-
-    /* Override the setter for the click coordinate to not update the label. */
-    override var mClickCoordinate: Pair<Float, Float> = Pair(0.0f, 0.0f)
-        set(value)
-        {
-            field = value
-            mCoordinateChanged = true
-        }
-
     /* Top left coordinate point of the clickable region. */
     var mTopLeftCoordinate: Pair<Float, Float> = topLeftCoordinate
-        set(value)
-        {
-            field = value
-            mStatementLabel = updateLabel(value, mBottomRightCoordinate)
-        }
 
     /* Bottom right coordinate point of the clickable region. */
     var mBottomRightCoordinate: Pair<Float, Float> = bottomRightCoordinate
-        set(value)
-        {
-            field = value
-            mStatementLabel = updateLabel(mTopLeftCoordinate, value)
-        }
 
     /**
      * Required constructor for a Parcelable implementation.
@@ -81,23 +61,10 @@ class ClickRegionStatement(topLeftCoordinate: Pair<Float, Float>,
         return Pair(randomXCoordinate, randomYCoordinate)
     }
 
-    /**
-     * Generates the updated label for the ClickRegionStatement. The method needs
-     * to be called when either mTopLeftCoordinate or mBottomRightCoordinate is
-     * updated.
-     *
-     * @param newTopLeftCoordinate The new top left coordinate of the clickable
-     *      region.
-     * @param newBottomRightCoordinate The new bottom right coordinate of the clickable
-     *      region.
-     *
-     * @return The updated label of the ClickRegionStatement.
-     */
-    private fun updateLabel(newTopLeftCoordinate: Pair<Float, Float>,
-                            newBottomRightCoordinate: Pair<Float, Float>): String
+    override fun toString(): String
     {
-        return "Clicking in region: " + newTopLeftCoordinate.toString() +
-                " to " + newBottomRightCoordinate.toString()
+        return "Clicking in region: " + mTopLeftCoordinate.toString() +
+                " to " + mBottomRightCoordinate.toString()
     }
 
 

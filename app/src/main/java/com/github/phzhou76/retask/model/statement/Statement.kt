@@ -11,9 +11,6 @@ abstract class Statement: Parcelable
     /* If set to true, stop execution of Statement. Used to interrupt loops. */
     protected var mStopExecution: Boolean = false
 
-    /* The label of the Statement shown in the UI of the app. */
-    abstract var mStatementLabel: String
-
     /**
      * Halts execution of the Statement and any child Statements.
      */

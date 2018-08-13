@@ -14,6 +14,12 @@ import com.github.phzhou76.retask.handler.MainActivityHandler
 import com.github.phzhou76.retask.model.TaskScript
 import com.github.phzhou76.retask.model.statement.ClickRegionStatement
 import com.github.phzhou76.retask.model.statement.WaitStatement
+import com.github.phzhou76.retask.model.value.rvalue.BooleanValue
+import com.github.phzhou76.retask.model.value.rvalue.FloatValue
+import com.github.phzhou76.retask.model.value.rvalue.IntValue
+import com.github.phzhou76.retask.model.value.variable.BooleanVariable
+import com.github.phzhou76.retask.model.value.variable.FloatVariable
+import com.github.phzhou76.retask.model.value.variable.IntVariable
 import com.github.phzhou76.retask.service.TaskProxyService
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -84,17 +90,19 @@ class MainActivity : AppCompatActivity()
             if (mIsBound)
             {
                 val taskScript = TaskScript()
-                taskScript.mTaskScript?.let {
-                    it.mStatementList.add(WaitStatement(5000, 2500))
-                    it.mStatementList.add(ClickRegionStatement(Pair(100.0f, 100.0f), Pair(1000.0f, 2000.0f)))
+                taskScript.mTaskScript.mStatementList.add(WaitStatement(5000, 2500))
+                taskScript.mTaskScript.mStatementList.add(ClickRegionStatement(Pair(100.0f, 100.0f), Pair(1000.0f, 2000.0f)))
+                taskScript.mVariables["testInt"] = IntVariable("testInt", IntValue(5))
+                taskScript.mVariables["testFloat"] = FloatVariable("testFloat", FloatValue(6.0f))
+                taskScript.mVariables["testBoolean"] = BooleanVariable("testBoolean", BooleanValue(true))
 
-                    val bundle = Bundle()
-                    bundle.putParcelable(KEY_TASK_SCRIPT, taskScript)
+                val bundle = Bundle()
+                bundle.putParcelable(KEY_TASK_SCRIPT, taskScript)
 
-                    val scriptIntent = Intent(this, TaskProxyService::class.java)
-                    scriptIntent.putExtra(KEY_BUNDLE, bundle)
-                    startService(scriptIntent)
-                }
+                val scriptIntent = Intent(this, TaskProxyService::class.java)
+                scriptIntent.putExtra(KEY_BUNDLE, bundle)
+                startService(scriptIntent)
+
             }
         }
     }
@@ -145,7 +153,7 @@ class MainActivity : AppCompatActivity()
      */
     private fun checkAccessibilityServiceConnection()
     {
-        if(mIsBound)
+        if (mIsBound)
         {
             val checkConnectionMessage = Message.obtain()
             checkConnectionMessage.arg1 = 0
@@ -156,7 +164,7 @@ class MainActivity : AppCompatActivity()
 
     private fun updateProxyServiceStatus(isConnected: Boolean)
     {
-        if(isConnected)
+        if (isConnected)
         {
             proxyServiceTextView.text = "Proxy Service: Connected"
         }

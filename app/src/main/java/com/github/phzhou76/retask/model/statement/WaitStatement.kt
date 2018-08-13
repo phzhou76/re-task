@@ -12,23 +12,11 @@ import java.util.concurrent.ThreadLocalRandom
  */
 class WaitStatement(waitTime: Long, waitTimeVariance: Long) : Statement()
 {
-    override var mStatementLabel: String = updateLabel(waitTime, waitTimeVariance)
-
     /* Wait time in milliseconds. */
     var mWaitTime: Long = waitTime
-        set(value)
-        {
-            field = value
-            mStatementLabel = updateLabel(value, mWaitTimeVariance)
-        }
 
     /* Variation in wait time. Must be less than or equal to mWaitTime. */
     var mWaitTimeVariance: Long = waitTimeVariance
-        set(value)
-        {
-            field = value
-            mStatementLabel = updateLabel(mWaitTime, value)
-        }
 
     /**
      * Required constructor for a Parcelable implementation.
@@ -63,6 +51,12 @@ class WaitStatement(waitTime: Long, waitTimeVariance: Long) : Statement()
         }
     }
 
+    override fun toString(): String
+    {
+        return "Wait for: " + mWaitTime.toString() + " " + (177).toChar() +
+                " " + mWaitTimeVariance.toString() + " ms"
+    }
+
     /**
      * Generates a random wait time based on the wait time plus-minus the variance.
      *
@@ -72,21 +66,6 @@ class WaitStatement(waitTime: Long, waitTimeVariance: Long) : Statement()
     {
         return (mWaitTime - mWaitTimeVariance) +
                 ThreadLocalRandom.current().nextLong(0, 2 * mWaitTimeVariance + 1)
-    }
-
-    /**
-     * Generates the updated label for the WaitStatement. The method needs to be
-     * called whenever mWaitTime is updated.
-     *
-     * @param newWaitTime The new wait time of WaitStatement.
-     * @param newWaitTimeVariance The new wait time variance of WaitStatement.
-     *
-     * @return The updated label for the WaitStatement.
-     */
-    private fun updateLabel(newWaitTime: Long, newWaitTimeVariance: Long): String
-    {
-        return "Wait for: " + newWaitTime.toString() + " " + (177).toChar() +
-                " " + newWaitTimeVariance.toString() + " ms"
     }
 
 
