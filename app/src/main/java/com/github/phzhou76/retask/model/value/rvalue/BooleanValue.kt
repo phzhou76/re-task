@@ -5,6 +5,11 @@ import android.os.Parcelable
 import android.util.Log
 import com.github.phzhou76.retask.model.value.ValueType
 
+/**
+ * A boolean Value object.
+ *
+ * @constructor Creates a boolean Value object.
+ */
 class BooleanValue(booleanValue: Boolean) : RValue(ValueType.BOOLEAN)
 {
     var mBooleanValue: Boolean = booleanValue

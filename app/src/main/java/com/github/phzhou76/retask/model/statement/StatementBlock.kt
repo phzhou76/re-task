@@ -9,13 +9,9 @@ import android.util.Log
  */
 class StatementBlock() : Statement()
 {
+    /* List of Statements that this StatementBlock will execute. */
     var mStatementList: MutableList<Statement> = mutableListOf()
 
-    /**
-     * Required constructor for a Parcelable implementation.
-     *
-     * @constructor Takes the information from the Parcel to recreate the object.
-     */
     constructor(parcel: Parcel) : this()
     {
         parcel.readList(mStatementList, StatementBlock::class.java.classLoader)
@@ -49,6 +45,15 @@ class StatementBlock() : Statement()
             Log.d(TAG, mStatementList[i].toString())
 
             mStatementList[i].execute()
+        }
+    }
+
+    override fun printDebugLog()
+    {
+        Log.d(TAG, this.toString())
+
+        mStatementList.iterator().forEach {
+            it.printDebugLog()
         }
     }
 

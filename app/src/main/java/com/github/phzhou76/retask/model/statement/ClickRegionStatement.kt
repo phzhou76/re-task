@@ -2,14 +2,15 @@ package com.github.phzhou76.retask.model.statement
 
 import android.os.Parcel
 import android.os.Parcelable
+import android.util.Log
 import java.util.*
 
 /**
  * A Statement that clicks on a random coordinate point in a region.
  *
  * @constructor Creates a ClickRegionStatement that clicks at a random coordinate
- *      point in the rectangular region that it is given, specified by the top
- *      left coordinate and bottom right coordinate of the region.
+ *      point in the given rectangular region, specified by the top left coordinate
+ *      and bottom right coordinate of the region.
  */
 class ClickRegionStatement(topLeftCoordinate: Pair<Float, Float>,
                            bottomRightCoordinate: Pair<Float, Float>) : ClickStatement(Pair(0.0f, 0.0f))
@@ -20,11 +21,6 @@ class ClickRegionStatement(topLeftCoordinate: Pair<Float, Float>,
     /* Bottom right coordinate point of the clickable region. */
     var mBottomRightCoordinate: Pair<Float, Float> = bottomRightCoordinate
 
-    /**
-     * Required constructor for a Parcelable implementation.
-     *
-     * @constructor Takes the information from the Parcel to recreate the object.
-     */
     constructor(parcel: Parcel) : this(
             Pair(parcel.readFloat(), parcel.readFloat()),   /* mTopLeftCoordinate */
             Pair(parcel.readFloat(), parcel.readFloat())    /* mBottomRightCoordinate */
@@ -61,6 +57,11 @@ class ClickRegionStatement(topLeftCoordinate: Pair<Float, Float>,
         return Pair(randomXCoordinate, randomYCoordinate)
     }
 
+    override fun printDebugLog()
+    {
+        Log.d(TAG, this.toString())
+    }
+
     override fun toString(): String
     {
         return "Clicking in region: " + mTopLeftCoordinate.toString() +
@@ -84,6 +85,8 @@ class ClickRegionStatement(topLeftCoordinate: Pair<Float, Float>,
 
     companion object CREATOR : Parcelable.Creator<ClickRegionStatement>
     {
+        private val TAG: String = ClickRegionStatement::class.java.simpleName
+
         override fun createFromParcel(parcel: Parcel): ClickRegionStatement
         {
             return ClickRegionStatement(parcel)

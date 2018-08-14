@@ -6,14 +6,19 @@ import android.util.Log
 import com.github.phzhou76.retask.model.value.ValueType
 import com.github.phzhou76.retask.model.value.rvalue.BooleanValue
 
+/**
+ * A Variable that holds a boolean Value.
+ *
+ * @constructor Creates a BooleanVariable object that holds a boolean Value object.
+ */
 class BooleanVariable(variableName: String, booleanValue: BooleanValue)
     : Variable(ValueType.BOOLEAN, variableName, booleanValue)
 {
     constructor(parcel: Parcel) : this(
             parcel.readString()
-                    ?: "Parcel Error: Variable",         /* mVariableName */
+                    ?: throw NullPointerException("Parcel Error: BooleanVariable (mVariableName)"), /* mVariableName */
             parcel.readParcelable(BooleanValue::class.java.classLoader)
-                    ?: BooleanValue(false)   /* mValue */
+                    ?: throw NullPointerException("Parcel Error: BooleanVariable (mValue)")         /* mValue */
     )
 
     override fun printDebugLog()

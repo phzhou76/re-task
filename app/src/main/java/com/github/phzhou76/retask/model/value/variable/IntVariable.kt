@@ -6,14 +6,19 @@ import android.util.Log
 import com.github.phzhou76.retask.model.value.ValueType
 import com.github.phzhou76.retask.model.value.rvalue.IntValue
 
+/**
+ * A Variable that holds an integer Value.
+ *
+ * @constructor Creates an IntVariable object that holds an integer Value object.
+ */
 class IntVariable(variableName: String, intValue: IntValue)
     : Variable(ValueType.INT, variableName, intValue)
 {
     constructor(parcel: Parcel) : this(
             parcel.readString()
-                    ?: "Parcel Error: Variable",    /* mVariableName */
+                    ?: throw NullPointerException("Parcel Error: IntVariable (mVariableName)"),     /* mVariableName */
             parcel.readParcelable(IntValue::class.java.classLoader)
-                    ?: IntValue(-1)         /* mValue */
+                    ?: throw NullPointerException("Parcel Error: IntVariable (mValue)")             /* mValue */
     )
 
     override fun printDebugLog()

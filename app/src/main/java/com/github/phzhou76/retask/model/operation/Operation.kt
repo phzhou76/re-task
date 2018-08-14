@@ -20,4 +20,12 @@ abstract class Operation(leftValue: Value, rightValue: Value) : Parcelable
      * @return The result of the operation.
      */
     abstract fun evaluateOperation(): RValue
+
+    /**
+     * Determines if the left-hand and right-hand values are valid for the
+     * operation.
+     *
+     * @return True if the inputs are valid, false otherwise.
+     */
+    abstract fun determineValidOperation(): Boolean
 }

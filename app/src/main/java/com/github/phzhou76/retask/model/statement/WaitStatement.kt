@@ -2,6 +2,7 @@ package com.github.phzhou76.retask.model.statement
 
 import android.os.Parcel
 import android.os.Parcelable
+import android.util.Log
 import java.util.concurrent.ThreadLocalRandom
 
 /**
@@ -18,11 +19,6 @@ class WaitStatement(waitTime: Long, waitTimeVariance: Long) : Statement()
     /* Variation in wait time. Must be less than or equal to mWaitTime. */
     var mWaitTimeVariance: Long = waitTimeVariance
 
-    /**
-     * Required constructor for a Parcelable implementation.
-     *
-     * @constructor Takes the information from the Parcel to recreate the object.
-     */
     constructor(parcel: Parcel) : this(
             parcel.readLong(),   /* mWaitTime */
             parcel.readLong()   /* mWaitTimeVariance */
@@ -49,6 +45,11 @@ class WaitStatement(waitTime: Long, waitTimeVariance: Long) : Statement()
                 timeLeftToWait = 0
             }
         }
+    }
+
+    override fun printDebugLog()
+    {
+        Log.d(TAG, this.toString())
     }
 
     override fun toString(): String
@@ -83,6 +84,8 @@ class WaitStatement(waitTime: Long, waitTimeVariance: Long) : Statement()
 
     companion object CREATOR : Parcelable.Creator<WaitStatement>
     {
+        private val TAG: String = WaitStatement::class.java.simpleName
+
         override fun createFromParcel(parcel: Parcel): WaitStatement
         {
             return WaitStatement(parcel)

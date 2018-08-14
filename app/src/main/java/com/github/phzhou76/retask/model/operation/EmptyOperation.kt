@@ -14,22 +14,26 @@ class EmptyOperation(value: Value) : Operation(value, NullValue())
                     ?: NullValue()
     )
 
+    /**
+     * Returns the Value of the Variable or the RValue.
+     *
+     * @return Variable's held Value or RValue.
+     */
     override fun evaluateOperation(): RValue
     {
-        val tempValue = mLeftValue
-
-        return when (tempValue)
-        {
-            is Variable -> tempValue.mValue
-            is RValue   -> tempValue
-            else        -> NullValue()
-        }
+        return mLeftValue.getValue()
     }
 
-    override fun getLabel(): String
+    override fun determineValidOperation(): Boolean
     {
-        return mLeftValue.getLabel()
+        return true
     }
+
+    override fun toString(): String
+    {
+        return mLeftValue.toString()
+    }
+
 
     /* Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)

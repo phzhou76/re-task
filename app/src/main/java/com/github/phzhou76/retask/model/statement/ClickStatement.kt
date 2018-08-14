@@ -4,6 +4,7 @@ import android.accessibilityservice.GestureDescription
 import android.graphics.Path
 import android.os.Parcel
 import android.os.Parcelable
+import android.util.Log
 import com.github.phzhou76.retask.service.TaskAccessibilityService
 
 /**
@@ -25,16 +26,11 @@ open class ClickStatement(clickCoordinate: Pair<Float, Float>) : Statement()
     /* Marks whether or not the gesture description needs to be generated before
      * the click is executed.
      */
-    protected var mCoordinateChanged: Boolean = true
+    private var mCoordinateChanged: Boolean = true
 
     /* Describes the click gesture. */
     private lateinit var mGestureDescription: GestureDescription
 
-    /**
-     * Required constructor for a Parcelable implementation.
-     *
-     * @constructor Takes the information from the Parcel to recreate the object.
-     */
     constructor(parcel: Parcel) : this(
             Pair(parcel.readFloat(), parcel.readFloat())    /* mClickCoordinate */
     )
@@ -52,6 +48,16 @@ open class ClickStatement(clickCoordinate: Pair<Float, Float>) : Statement()
 
         TaskAccessibilityService.getSharedInstance()?.dispatchGesture(mGestureDescription,
                 null, null)
+    }
+
+    override fun printDebugLog()
+    {
+        Log.d(TAG, this.toString())
+    }
+
+    override fun toString(): String
+    {
+        return "Click at: " + mClickCoordinate.toString()
     }
 
     /**
@@ -76,11 +82,6 @@ open class ClickStatement(clickCoordinate: Pair<Float, Float>) : Statement()
         mCoordinateChanged = false
     }
 
-    override fun toString(): String
-    {
-        return "Click at: " + mClickCoordinate.toString()
-    }
-
 
     /* Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)
@@ -96,6 +97,8 @@ open class ClickStatement(clickCoordinate: Pair<Float, Float>) : Statement()
 
     companion object CREATOR : Parcelable.Creator<ClickStatement>
     {
+        private val TAG: String = ClickStatement::class.java.simpleName
+
         override fun createFromParcel(parcel: Parcel): ClickStatement
         {
             return ClickStatement(parcel)

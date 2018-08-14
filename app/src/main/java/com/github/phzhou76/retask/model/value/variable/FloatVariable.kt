@@ -6,14 +6,19 @@ import android.util.Log
 import com.github.phzhou76.retask.model.value.ValueType
 import com.github.phzhou76.retask.model.value.rvalue.FloatValue
 
+/**
+ * A Variable that holds a float value.
+ *
+ * @constructor Creates a FloatVariable object that holds a float Value object.
+ */
 class FloatVariable(variableName: String, floatValue: FloatValue)
     : Variable(ValueType.FLOAT, variableName, floatValue)
 {
     constructor(parcel: Parcel) : this(
             parcel.readString()
-                    ?: "Parcel Error: Variable",     /* mVariableName */
+                    ?: throw NullPointerException("Parcel Error: FloatVariable (mVariableName)"),   /* mVariableName */
             parcel.readParcelable(FloatValue::class.java.classLoader)
-                    ?: FloatValue(-1.0f)    /* mValue */
+                    ?: throw NullPointerException("Parcel Error: FloatVariable (mValue)")           /* mValue */
     )
 
     override fun printDebugLog()

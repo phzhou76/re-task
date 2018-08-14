@@ -4,10 +4,12 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
 import com.github.phzhou76.retask.model.statement.StatementBlock
-import com.github.phzhou76.retask.model.value.rvalue.IntValue
-import com.github.phzhou76.retask.model.value.variable.IntVariable
 import com.github.phzhou76.retask.model.value.variable.Variable
 
+/**
+ * Holds the variables and the script that relies on it for execution. It also
+ * takes care of starting and stopping the execution of the script.
+ */
 class TaskScript() : Parcelable
 {
     /* Hash map of variables' names to their Variable object. */
@@ -29,6 +31,7 @@ class TaskScript() : Parcelable
      */
     fun stopExecution()
     {
+        Log.d(TAG, "stopExecution")
         mTaskScript.stopExecution()
     }
 
@@ -46,9 +49,15 @@ class TaskScript() : Parcelable
      */
     fun printDebugLog()
     {
+        Log.d(TAG, "printDebugLog")
+
+        Log.d(TAG, "Variables Section:")
         mVariables.iterator().forEach {
             it.value.printDebugLog()
         }
+
+        Log.d(TAG, "Statements Section:")
+
     }
 
     /**
@@ -63,15 +72,16 @@ class TaskScript() : Parcelable
 
         for (i in 0 until variableCount)
         {
-            val variableName: String = parcel.readString() ?: "Parcel error"
+            val variableName: String = parcel.readString()
+                    ?: throw NullPointerException("Parcel Error: TaskScript (mVariables)")
             val variable: Variable = parcel.readParcelable(Variable::class.java.classLoader)
-                    ?: IntVariable("Error Variable", IntValue(-1))
+                    ?: throw NullPointerException("Parcel Error: TaskScript (mVariables)")
             mVariables[variableName] = variable
         }
 
         /* Read script data and recreate it. */
         mTaskScript = parcel.readParcelable(StatementBlock::class.java.classLoader)
-                ?: StatementBlock()
+                ?: throw NullPointerException("Parcel Error: TaskScript (mTaskScript)")
     }
 
     /**

@@ -5,6 +5,10 @@ import android.os.Parcelable
 import android.util.Log
 import com.github.phzhou76.retask.model.value.ValueType
 
+/**
+ * A Value object that holds no value. Used for Operations that don't need to
+ * hold two input Values.
+ */
 class NullValue() : RValue(ValueType.NULL)
 {
     constructor(@Suppress("UNUSED_PARAMETER") parcel: Parcel) : this()

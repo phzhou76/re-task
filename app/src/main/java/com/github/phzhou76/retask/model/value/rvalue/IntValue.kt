@@ -5,6 +5,11 @@ import android.os.Parcelable
 import android.util.Log
 import com.github.phzhou76.retask.model.value.ValueType
 
+/**
+ * An integer Value object.
+ *
+ * @constructor Creates an integer Value object.
+ */
 class IntValue(intValue: Int) : RValue(ValueType.INT)
 {
     var mIntValue: Int = intValue
