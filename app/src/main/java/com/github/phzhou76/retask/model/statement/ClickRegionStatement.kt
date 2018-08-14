@@ -68,8 +68,7 @@ class ClickRegionStatement(topLeftCoordinate: Pair<Float, Float>,
                 " to " + mBottomRightCoordinate.toString()
     }
 
-
-    /* Parcelable implementation. */
+    /** Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)
     {
         parcel.writeFloat(mTopLeftCoordinate.first)

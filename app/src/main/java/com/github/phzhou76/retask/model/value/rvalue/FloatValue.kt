@@ -5,11 +5,6 @@ import android.os.Parcelable
 import android.util.Log
 import com.github.phzhou76.retask.model.value.ValueType
 
-/**
- * An float Value object.
- *
- * @constructor Creates a float Value object.
- */
 class FloatValue(floatValue: Float) : RValue(ValueType.FLOAT)
 {
     var mFloatValue: Float = floatValue
@@ -28,8 +23,7 @@ class FloatValue(floatValue: Float) : RValue(ValueType.FLOAT)
         return "$mFloatValue"
     }
 
-
-    /* Parcel implementation. */
+    /** Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)
     {
         parcel.writeFloat(mFloatValue)

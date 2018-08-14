@@ -5,11 +5,6 @@ import android.os.Parcelable
 import android.util.Log
 import com.github.phzhou76.retask.model.value.ValueType
 
-/**
- * An integer Value object.
- *
- * @constructor Creates an integer Value object.
- */
 class IntValue(intValue: Int) : RValue(ValueType.INT)
 {
     var mIntValue: Int = intValue
@@ -28,8 +23,7 @@ class IntValue(intValue: Int) : RValue(ValueType.INT)
         return "$mIntValue"
     }
 
-
-    /* Parcel implementation. */
+    /** Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)
     {
         parcel.writeInt(mIntValue)

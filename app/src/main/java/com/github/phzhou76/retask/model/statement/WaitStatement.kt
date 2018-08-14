@@ -69,8 +69,7 @@ class WaitStatement(waitTime: Long, waitTimeVariance: Long) : Statement()
                 ThreadLocalRandom.current().nextLong(0, 2 * mWaitTimeVariance + 1)
     }
 
-
-    /* Parcelable implementation. */
+    /** Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)
     {
         parcel.writeLong(mWaitTime)

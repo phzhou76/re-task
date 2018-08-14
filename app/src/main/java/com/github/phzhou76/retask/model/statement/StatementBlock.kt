@@ -42,8 +42,6 @@ class StatementBlock() : Statement()
                 break
             }
 
-            Log.d(TAG, mStatementList[i].toString())
-
             mStatementList[i].execute()
         }
     }
@@ -62,8 +60,7 @@ class StatementBlock() : Statement()
         return "Statement Block"
     }
 
-
-    /* Parcelable implementation. */
+    /** Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)
     {
         parcel.writeList(mStatementList)

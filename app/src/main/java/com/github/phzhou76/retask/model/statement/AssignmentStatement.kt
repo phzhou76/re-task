@@ -9,6 +9,9 @@ import com.github.phzhou76.retask.model.value.rvalue.BooleanValue
 import com.github.phzhou76.retask.model.value.rvalue.FloatValue
 import com.github.phzhou76.retask.model.value.rvalue.IntValue
 import com.github.phzhou76.retask.model.value.rvalue.RValue
+import com.github.phzhou76.retask.model.value.variable.BooleanVariable
+import com.github.phzhou76.retask.model.value.variable.FloatVariable
+import com.github.phzhou76.retask.model.value.variable.IntVariable
 import com.github.phzhou76.retask.model.value.variable.Variable
 
 /**
@@ -19,10 +22,10 @@ import com.github.phzhou76.retask.model.value.variable.Variable
  */
 class AssignmentStatement(variable: Variable, assignment: Operation) : Statement()
 {
-    /* The Variable to assign a new value to. */
+    /* Variable to assign a new value to. */
     var mVariable: Variable = variable
 
-    /* The Operation whose value will be assigned to the Variable. */
+    /* Operation whose value will be assigned to the Variable. */
     var mAssignment: Operation = assignment
 
     constructor(parcel: Parcel) : this(
@@ -85,7 +88,8 @@ class AssignmentStatement(variable: Variable, assignment: Operation) : Statement
      * Assigns the assignment's value to the Variable, and performs any casting
      * if necessary, such as ints to float variables. Type checking with
      * determineValidAssignment must be done prior to calling this method, since
-     * it assumes that the Variable and the assignment values' types are compatible.
+     * this method assumes that the Variable and the assignment values' types are
+     * compatible.
      *
      * @param assignmentValue The value that will be assigned to the Variable.
      */
@@ -93,34 +97,38 @@ class AssignmentStatement(variable: Variable, assignment: Operation) : Statement
     {
         when (assignmentValue)
         {
-            is BooleanValue -> mVariable.mValue = assignmentValue
+            is BooleanValue ->
+            {
+                (mVariable as BooleanVariable).mBooleanValue = assignmentValue.mBooleanValue
+            }
             is IntValue     ->
             {
-                var tempValue = assignmentValue
-
                 /* Cast the assignment value to a float type. */
                 if (mVariable.mValueType == ValueType.FLOAT)
                 {
-                    tempValue = FloatValue(tempValue.mIntValue.toFloat())
+                    (mVariable as FloatVariable).mFloatValue = assignmentValue.mIntValue.toFloat()
                 }
-                mVariable.mValue = tempValue
+                else
+                {
+                    (mVariable as IntVariable).mIntValue = assignmentValue.mIntValue
+                }
             }
             is FloatValue   ->
             {
-                var tempValue = assignmentValue
-
                 /* Cast the assignment value to an int type. */
                 if (mVariable.mValueType == ValueType.INT)
                 {
-                    tempValue = IntValue(tempValue.mFloatValue.toInt())
+                    (mVariable as IntVariable).mIntValue = assignmentValue.mFloatValue.toInt()
                 }
-                mVariable.mValue = tempValue
+                else
+                {
+                    (mVariable as FloatVariable).mFloatValue = assignmentValue.mFloatValue
+                }
             }
         }
     }
 
-
-    /* Parcelable implementation. */
+    /** Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)
     {
         parcel.writeParcelable(mVariable, flags)

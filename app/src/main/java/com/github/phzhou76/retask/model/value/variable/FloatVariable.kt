@@ -4,35 +4,34 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
 import com.github.phzhou76.retask.model.value.ValueType
-import com.github.phzhou76.retask.model.value.rvalue.FloatValue
 
-/**
- * A Variable that holds a float value.
- *
- * @constructor Creates a FloatVariable object that holds a float Value object.
- */
-class FloatVariable(variableName: String, floatValue: FloatValue)
-    : Variable(ValueType.FLOAT, variableName, floatValue)
+class FloatVariable(variableName: String, floatValue: Float)
+    : Variable(ValueType.FLOAT, variableName)
 {
+    /* Float value that the Variable holds. */
+    var mFloatValue: Float = floatValue
+
     constructor(parcel: Parcel) : this(
             parcel.readString()
-                    ?: throw NullPointerException("Parcel Error: FloatVariable (mVariableName)"),   /* mVariableName */
-            parcel.readParcelable(FloatValue::class.java.classLoader)
-                    ?: throw NullPointerException("Parcel Error: FloatVariable (mValue)")           /* mValue */
+                    ?: throw NullPointerException("Parcel Error: FloatVariable (mVariableName)"),   /* mFloatVariable */
+            parcel.readFloat()                                                                      /* mFloatValue */
     )
 
     override fun printDebugLog()
     {
         Log.d(TAG, this.toString())
-        mValue.printDebugLog()
     }
 
+    override fun toString(): String
+    {
+        return "$mVariableName: $mFloatValue"
+    }
 
-    /* Parcel implementation. */
+    /** Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)
     {
         parcel.writeString(mVariableName)
-        parcel.writeParcelable(mValue, flags)
+        parcel.writeFloat(mFloatValue)
     }
 
     override fun describeContents(): Int

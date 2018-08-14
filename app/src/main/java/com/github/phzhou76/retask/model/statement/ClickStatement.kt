@@ -10,8 +10,7 @@ import com.github.phzhou76.retask.service.TaskAccessibilityService
 /**
  * A Statement that clicks at the given coordinate point.
  *
- * @constructor Creates a ClickStatement that clicks at the given coordinate point
- *      through the use of an Accessibility Service.
+ * @constructor Creates a ClickStatement that clicks at the given coordinate point.
  */
 open class ClickStatement(clickCoordinate: Pair<Float, Float>) : Statement()
 {
@@ -23,9 +22,7 @@ open class ClickStatement(clickCoordinate: Pair<Float, Float>) : Statement()
             mCoordinateChanged = true
         }
 
-    /* Marks whether or not the gesture description needs to be generated before
-     * the click is executed.
-     */
+    /* Marks whether or not the gesture description needs to be regenerated. */
     private var mCoordinateChanged: Boolean = true
 
     /* Describes the click gesture. */
@@ -82,8 +79,7 @@ open class ClickStatement(clickCoordinate: Pair<Float, Float>) : Statement()
         mCoordinateChanged = false
     }
 
-
-    /* Parcelable implementation. */
+    /** Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)
     {
         parcel.writeFloat(mClickCoordinate.first)

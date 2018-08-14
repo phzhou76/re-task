@@ -8,24 +8,7 @@ import android.view.accessibility.AccessibilityEvent
 
 class TaskAccessibilityService : AccessibilityService()
 {
-    companion object
-    {
-        private val TAG: String = TaskAccessibilityService::class.java.simpleName
-
-        private var SHARED_INSTANCE: TaskAccessibilityService? = null
-
-        /**
-         * Singleton pattern. Returns a Singleton instance of the Accessibility
-         * Service.
-         *
-         * @return The instance of the Accessibility Service.
-         */
-        fun getSharedInstance(): TaskAccessibilityService?
-        {
-            return SHARED_INSTANCE
-        }
-    }
-
+    /* Reference to proxy service to disable script manually. */
     private var mTaskProxyService: TaskProxyService? = null
 
     /**
@@ -104,4 +87,23 @@ class TaskAccessibilityService : AccessibilityService()
     {
         mTaskProxyService = null
     }
+
+    companion object
+    {
+        private val TAG: String = TaskAccessibilityService::class.java.simpleName
+
+        private var SHARED_INSTANCE: TaskAccessibilityService? = null
+
+        /**
+         * Singleton pattern. Returns a Singleton instance of the Accessibility
+         * Service.
+         *
+         * @return The instance of the Accessibility Service.
+         */
+        fun getSharedInstance(): TaskAccessibilityService?
+        {
+            return SHARED_INSTANCE
+        }
+    }
+
 }

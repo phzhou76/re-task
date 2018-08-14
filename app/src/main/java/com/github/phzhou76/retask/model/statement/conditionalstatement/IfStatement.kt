@@ -8,23 +8,24 @@ import com.github.phzhou76.retask.model.statement.StatementBlock
 
 /**
  * A Statement that executes the input StatementBlock if the condition is true.
- * If the condition is false, it will execute the attached IfStatement if one
- * is available.
+ * If the condition is false, it will execute the attached ElseIfStatement if
+ * available.
  *
  * @constructor Creates an IfStatement with the input condition, StatementBlock,
- *      and an optional IfStatement for the else block.
+ *      and an optional ElseIfStatement for the else block.
  */
-open class IfStatement(trueCondition: EqualityOperation, trueBlock: StatementBlock, elseStatement: IfStatement?)
+open class IfStatement(trueCondition: EqualityOperation?, trueBlock: StatementBlock, elseIfStatement: ElseIfStatement?)
     : ConditionalStatement(trueCondition, trueBlock)
 {
-    var mElseStatement: IfStatement? = elseStatement
+    /* ElseIfStatement that will be executed if the condition returns false. */
+    var mElseIfStatement: ElseIfStatement? = elseIfStatement
 
     constructor(parcel: Parcel) : this(
             parcel.readParcelable(EqualityOperation::class.java.classLoader)
                     ?: throw NullPointerException("Parcel Error: IfStatement (mTrueCondition)"),    /* mTrueCondition */
             parcel.readParcelable(StatementBlock::class.java.classLoader)
                     ?: throw NullPointerException("Parcel Error: IfStatement (mTrueBlock)"),        /* mTrueBlock */
-            parcel.readParcelable(IfStatement::class.java.classLoader)                              /* mElseStatement */
+            parcel.readParcelable(IfStatement::class.java.classLoader)                              /* mElseIfStatement */
     )
 
     /**
@@ -33,13 +34,15 @@ open class IfStatement(trueCondition: EqualityOperation, trueBlock: StatementBlo
      */
     override fun execute()
     {
-        if (mTrueCondition.evaluateBooleanOperation().mBooleanValue)
-        {
-            mTrueBlock.execute()
-        }
-        else
-        {
-            mElseStatement?.execute()
+        mTrueCondition?.let {
+            if (it.evaluateBooleanOperation().mBooleanValue)
+            {
+                mTrueBlock.execute()
+            }
+            else
+            {
+                mElseIfStatement?.execute()
+            }
         }
     }
 
@@ -54,13 +57,12 @@ open class IfStatement(trueCondition: EqualityOperation, trueBlock: StatementBlo
         return "If $mTrueCondition:"
     }
 
-
-    /* Parcelable implementation. */
+    /** Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)
     {
         parcel.writeParcelable(mTrueCondition, flags)
         parcel.writeParcelable(mTrueBlock, flags)
-        parcel.writeParcelable(mElseStatement, flags)
+        parcel.writeParcelable(mElseIfStatement, flags)
     }
 
     override fun describeContents(): Int

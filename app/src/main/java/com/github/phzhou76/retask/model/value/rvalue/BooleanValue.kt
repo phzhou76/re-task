@@ -5,11 +5,6 @@ import android.os.Parcelable
 import android.util.Log
 import com.github.phzhou76.retask.model.value.ValueType
 
-/**
- * A boolean Value object.
- *
- * @constructor Creates a boolean Value object.
- */
 class BooleanValue(booleanValue: Boolean) : RValue(ValueType.BOOLEAN)
 {
     var mBooleanValue: Boolean = booleanValue
@@ -28,8 +23,7 @@ class BooleanValue(booleanValue: Boolean) : RValue(ValueType.BOOLEAN)
         return if (mBooleanValue) "true" else "false"
     }
 
-
-    /* Parcel implementation. */
+    /** Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)
     {
         parcel.writeInt(if (mBooleanValue) 1 else 0)

@@ -12,11 +12,6 @@ import com.github.phzhou76.retask.model.TaskScript
 
 class TaskProxyService : IntentService("TaskProxyService")
 {
-    companion object
-    {
-        private val TAG: String = TaskProxyService::class.java.simpleName
-    }
-
     /* Messenger that the client Activity sends Messages to. */
     private val mMessenger: Messenger = Messenger(TaskProxyHandler(this))
 
@@ -82,5 +77,10 @@ class TaskProxyService : IntentService("TaskProxyService")
     fun isAccessibilityConnected(): Boolean
     {
         return TaskAccessibilityService.getSharedInstance() != null
+    }
+
+    companion object
+    {
+        private val TAG: String = TaskProxyService::class.java.simpleName
     }
 }

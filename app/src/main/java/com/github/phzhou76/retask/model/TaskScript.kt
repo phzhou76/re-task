@@ -103,8 +103,7 @@ class TaskScript() : Parcelable
         parcel.writeParcelable(mTaskScript, flags)
     }
 
-
-    /* Parcelable implementation. */
+    /** Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)
     {
         writeScriptToParcel(parcel, flags)

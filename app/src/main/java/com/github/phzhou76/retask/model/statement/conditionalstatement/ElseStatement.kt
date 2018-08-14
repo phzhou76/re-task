@@ -1,24 +1,18 @@
 package com.github.phzhou76.retask.model.statement.conditionalstatement
 
 import android.util.Log
-import com.github.phzhou76.retask.model.operation.equalityoperation.EmptyEqualityOperation
 import com.github.phzhou76.retask.model.statement.StatementBlock
-import com.github.phzhou76.retask.model.value.rvalue.BooleanValue
 
 /**
- * A Statement that should only be linked to an IfStatement, since there is no
- * condition required for the StatementBlock to be executed.
+ * A Statement that should only be linked to an IfStatement. If all other
+ * IfStatements and ElseIfStatements have been executed, this ElseStatement can
+ * be executed.
  *
  * @constructor Creates an ElseStatement with the input StatementBlock.
  */
 class ElseStatement(statementBlock: StatementBlock)
-    : IfStatement(EmptyEqualityOperation(BooleanValue((true))), statementBlock, null)
+    : ElseIfStatement(null, statementBlock, null)
 {
-    companion object
-    {
-        private val TAG: String = ElseStatement::class.java.simpleName
-    }
-
     override fun execute()
     {
         mTrueBlock.execute()
@@ -33,5 +27,10 @@ class ElseStatement(statementBlock: StatementBlock)
     override fun toString(): String
     {
         return "Else:"
+    }
+
+    companion object
+    {
+        private val TAG: String = ElseStatement::class.java.simpleName
     }
 }

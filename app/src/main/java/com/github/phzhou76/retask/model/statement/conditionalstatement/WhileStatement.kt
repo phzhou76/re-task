@@ -14,7 +14,7 @@ import com.github.phzhou76.retask.model.statement.StatementBlock
  *      StatementBlock until the input condition returns false or until the script
  *      is manually stopped.
  */
-class WhileStatement(trueCondition: EqualityOperation, trueBlock: StatementBlock)
+class WhileStatement(trueCondition: EqualityOperation?, trueBlock: StatementBlock)
     : ConditionalStatement(trueCondition, trueBlock)
 {
     constructor(parcel: Parcel) : this(
@@ -30,9 +30,11 @@ class WhileStatement(trueCondition: EqualityOperation, trueBlock: StatementBlock
      */
     override fun execute()
     {
-        while (mTrueCondition.evaluateBooleanOperation().mBooleanValue && !mStopExecution)
-        {
-            mTrueBlock.execute()
+        mTrueCondition?.let {
+            while (it.evaluateBooleanOperation().mBooleanValue && !mStopExecution)
+            {
+                mTrueBlock.execute()
+            }
         }
     }
 
@@ -47,8 +49,7 @@ class WhileStatement(trueCondition: EqualityOperation, trueBlock: StatementBlock
         return "While: $mTrueCondition:"
     }
 
-
-    /* Parcelable implementation. */
+    /** Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)
     {
         parcel.writeParcelable(mTrueCondition, flags)
