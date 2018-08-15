@@ -3,27 +3,50 @@ package com.github.phzhou76.retask.model.operation
 import android.os.Parcel
 import android.os.Parcelable
 import com.github.phzhou76.retask.model.value.Value
-import com.github.phzhou76.retask.model.value.rvalue.NullValue
 import com.github.phzhou76.retask.model.value.rvalue.RValue
 import com.github.phzhou76.retask.model.value.variable.Variable
 
-class EmptyOperation(value: Value) : Operation(value, NullValue())
+/**
+ * Holds a Variable or Value with no operations applied to it.
+ *
+ * @constructor Creates an EmptyOperation that just holds a Variable or Value.
+ */
+class EmptyOperation(value: Value?) : Operation(value, null)
 {
     constructor(parcel: Parcel) : this(
             parcel.readParcelable<Value>(Value::class.java.classLoader)
-                    ?: NullValue()
     )
 
     /**
-     * Returns the Value of the Variable or the RValue.
+     * Returns the Variable's Value or RValue.
      *
-     * @return Variable's held Value or RValue.
+     * @throws IllegalArgumentException Thrown if mLeftValue is not a Variable or
+     *      RValue.
+     * @throws NullPointerException Thrown if mLeftValue is null.
+     *
+     * @return Variable's Value or RValue.
      */
     override fun evaluateOperation(): RValue
     {
-        return mLeftValue.getValue()
+        val valueCopy: Value? = mLeftValue
+
+        valueCopy?.let {
+            return when (it)
+            {
+                is Variable -> it.getValue()
+                is RValue   -> it
+                else        -> throw IllegalArgumentException("InvalidArgumentException: EmptyOperation")
+            }
+        }
+
+        throw NullPointerException("NullPointerException: EmptyOperation")
     }
 
+    /**
+     * Operation is always valid if there is no operation.
+     *
+     * @return True
+     */
     override fun determineValidOperation(): Boolean
     {
         return true
@@ -34,8 +57,7 @@ class EmptyOperation(value: Value) : Operation(value, NullValue())
         return mLeftValue.toString()
     }
 
-
-    /* Parcelable implementation. */
+    /** Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)
     {
         parcel.writeParcelable(mLeftValue, flags)
@@ -58,5 +80,4 @@ class EmptyOperation(value: Value) : Operation(value, NullValue())
             return arrayOfNulls(size)
         }
     }
-
 }

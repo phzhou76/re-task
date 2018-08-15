@@ -3,6 +3,8 @@ package com.github.phzhou76.retask.model.value.variable
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
+import com.github.phzhou76.retask.model.value.BooleanValue
+import com.github.phzhou76.retask.model.value.Value
 import com.github.phzhou76.retask.model.value.ValueType
 
 class BooleanVariable(variableName: String, booleanValue: Boolean)
@@ -16,6 +18,11 @@ class BooleanVariable(variableName: String, booleanValue: Boolean)
                     ?: throw NullPointerException("Parcel Error: BooleanVariable (mVariableName)"), /* mVariableName */
             (parcel.readInt() == 1)                                                                 /* mBooleanValue */
     )
+
+    override fun evaluateValue(): Value
+    {
+        return BooleanValue(mBooleanValue)
+    }
 
     override fun printDebugLog()
     {

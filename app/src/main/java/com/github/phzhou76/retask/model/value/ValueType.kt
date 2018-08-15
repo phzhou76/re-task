@@ -4,6 +4,6 @@ enum class ValueType
 {
     INT,
     FLOAT,
-    BOOLEAN,
-    NULL
+    LONG,
+    BOOLEAN
 }

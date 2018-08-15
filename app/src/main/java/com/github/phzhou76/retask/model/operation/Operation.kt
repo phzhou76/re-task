@@ -5,14 +5,11 @@ import com.github.phzhou76.retask.model.TaskScript
 import com.github.phzhou76.retask.model.value.Value
 import com.github.phzhou76.retask.model.value.rvalue.RValue
 
-abstract class Operation(leftValue: Value, rightValue: Value) : Parcelable
+abstract class Operation(leftValue: Value?, rightValue: Value?) : Parcelable
 {
-    /* All operations need a reference to the TaskScript to access Variables. */
-    var mTaskScript: TaskScript? = TaskScript.getSharedInstance()
-
-    /* Operator parameters. */
-    var mLeftValue: Value = leftValue
-    var mRightValue: Value = rightValue
+    /* Operation inputs. */
+    var mLeftValue: Value? = leftValue
+    var mRightValue: Value? = rightValue
 
     /**
      * Evaluates the operation and returns the value.

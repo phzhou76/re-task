@@ -2,15 +2,46 @@ package com.github.phzhou76.retask.model.operation.equalityoperation
 
 import com.github.phzhou76.retask.model.operation.Operation
 import com.github.phzhou76.retask.model.value.Value
-import com.github.phzhou76.retask.model.value.rvalue.BooleanValue
+import com.github.phzhou76.retask.model.value.ValueType
+import com.github.phzhou76.retask.model.value.BooleanValue
 import com.github.phzhou76.retask.model.value.rvalue.RValue
 
-abstract class EqualityOperation(leftValue: Value, rightValue: Value)
+abstract class EqualityOperation(leftValue: Value?, rightValue: Value?)
     : Operation(leftValue, rightValue)
 {
+    /**
+     * All evaluations for equality operations will be evaluated in
+     * evaluateBooleanOperation instead, which is guaranteed to return a
+     * BooleanValue object.
+     *
+     * @return A BooleanValue object.
+     */
     override fun evaluateOperation(): RValue
     {
         return evaluateBooleanOperation()
+    }
+
+    /**
+     * Determines if the operation has valid inputs. In this case, the operation
+     * is valid if both inputs are of type boolean, or if both inputs are of type
+     * float or int.
+     *
+     * @throws NullPointerException Thrown if either input is null.
+     *
+     * @return True if the inputs are valid, false otherwise.
+     */
+    override fun determineValidOperation(): Boolean
+    {
+        val leftValueCopy: Value? = mLeftValue
+        val rightValueCopy: Value? = mRightValue
+
+        if (leftValueCopy != null && rightValueCopy != null)
+        {
+            return !((leftValueCopy.mValueType == ValueType.BOOLEAN && rightValueCopy.mValueType != ValueType.BOOLEAN)
+                    || (leftValueCopy.mValueType != ValueType.BOOLEAN && rightValueCopy.mValueType == ValueType.BOOLEAN))
+        }
+
+        throw NullPointerException("NullPointerException: EqualityOperation")
     }
 
     /**

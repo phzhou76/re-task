@@ -1,11 +1,10 @@
-package com.github.phzhou76.retask.model.value.rvalue
+package com.github.phzhou76.retask.model.value
 
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
-import com.github.phzhou76.retask.model.value.ValueType
 
-class BooleanValue(booleanValue: Boolean) : RValue(ValueType.BOOLEAN)
+class BooleanValue(booleanValue: Boolean) : Value(ValueType.BOOLEAN)
 {
     var mBooleanValue: Boolean = booleanValue
 

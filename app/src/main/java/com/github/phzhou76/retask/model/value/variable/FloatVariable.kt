@@ -3,6 +3,8 @@ package com.github.phzhou76.retask.model.value.variable
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
+import com.github.phzhou76.retask.model.value.FloatValue
+import com.github.phzhou76.retask.model.value.Value
 import com.github.phzhou76.retask.model.value.ValueType
 
 class FloatVariable(variableName: String, floatValue: Float)
@@ -16,6 +18,11 @@ class FloatVariable(variableName: String, floatValue: Float)
                     ?: throw NullPointerException("Parcel Error: FloatVariable (mVariableName)"),   /* mFloatVariable */
             parcel.readFloat()                                                                      /* mFloatValue */
     )
+
+    override fun evaluateValue(): Value
+    {
+        return FloatValue(mFloatValue)
+    }
 
     override fun printDebugLog()
     {

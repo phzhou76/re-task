@@ -1,11 +1,10 @@
-package com.github.phzhou76.retask.model.value.rvalue
+package com.github.phzhou76.retask.model.value
 
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
-import com.github.phzhou76.retask.model.value.ValueType
 
-class FloatValue(floatValue: Float) : RValue(ValueType.FLOAT)
+class FloatValue(floatValue: Float) : Value(ValueType.FLOAT)
 {
     var mFloatValue: Float = floatValue
 

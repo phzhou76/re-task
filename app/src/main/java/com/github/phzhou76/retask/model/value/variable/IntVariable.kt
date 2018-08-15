@@ -3,6 +3,8 @@ package com.github.phzhou76.retask.model.value.variable
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
+import com.github.phzhou76.retask.model.value.IntValue
+import com.github.phzhou76.retask.model.value.Value
 import com.github.phzhou76.retask.model.value.ValueType
 
 class IntVariable(variableName: String, intValue: Int)
@@ -14,8 +16,13 @@ class IntVariable(variableName: String, intValue: Int)
     constructor(parcel: Parcel) : this(
             parcel.readString()
                     ?: throw NullPointerException("Parcel Error: IntVariable (mVariableName)"), /* mVariableName */
-            parcel.readInt()                                                                    /* mIntValue */
+            parcel.readInt()                                                                    /* mLongValue */
     )
+
+    override fun evaluateValue(): Value
+    {
+        return IntValue(mIntValue)
+    }
 
     override fun printDebugLog()
     {

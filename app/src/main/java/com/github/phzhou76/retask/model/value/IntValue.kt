@@ -1,16 +1,15 @@
-package com.github.phzhou76.retask.model.value.rvalue
+package com.github.phzhou76.retask.model.value
 
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
-import com.github.phzhou76.retask.model.value.ValueType
 
-class IntValue(intValue: Int) : RValue(ValueType.INT)
+class IntValue(intValue: Int) : Value(ValueType.INT)
 {
     var mIntValue: Int = intValue
 
     constructor(parcel: Parcel) : this(
-            parcel.readInt()    /* mIntValue */
+            parcel.readInt()    /* mLongValue */
     )
 
     override fun printDebugLog()

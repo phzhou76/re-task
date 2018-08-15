@@ -14,9 +14,9 @@ import com.github.phzhou76.retask.handler.MainActivityHandler
 import com.github.phzhou76.retask.model.TaskScript
 import com.github.phzhou76.retask.model.statement.ClickRegionStatement
 import com.github.phzhou76.retask.model.statement.WaitStatement
-import com.github.phzhou76.retask.model.value.rvalue.BooleanValue
-import com.github.phzhou76.retask.model.value.rvalue.FloatValue
-import com.github.phzhou76.retask.model.value.rvalue.IntValue
+import com.github.phzhou76.retask.model.value.BooleanValue
+import com.github.phzhou76.retask.model.value.FloatValue
+import com.github.phzhou76.retask.model.value.IntValue
 import com.github.phzhou76.retask.model.value.variable.BooleanVariable
 import com.github.phzhou76.retask.model.value.variable.FloatVariable
 import com.github.phzhou76.retask.model.value.variable.IntVariable
