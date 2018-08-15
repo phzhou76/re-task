@@ -1,18 +1,35 @@
-package com.github.phzhou76.retask.model.value
+package com.github.phzhou76.retask.model.value.numericvalue
 
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
+import com.github.phzhou76.retask.model.value.ValueType
 
-open class IntValue(intValue: Int) : Value(ValueType.INT)
+open class IntValue(intValue: Int) : NumericValue(ValueType.INT)
 {
     override var mValueName: String = "Integer Value"
 
     var mIntValue: Int = intValue
 
     constructor(parcel: Parcel) : this(
-            parcel.readInt()    /* mLongValue */
+            parcel.readInt()    /* mIntValue */
     )
+
+    /** Evaluation methods. */
+    override fun evaluateValueAsInt(): Int
+    {
+        return mIntValue
+    }
+
+    override fun evaluateValueAsFloat(): Float
+    {
+        return mIntValue.toFloat()
+    }
+
+    override fun evaluateValueAsLong(): Long
+    {
+        return mIntValue.toLong()
+    }
 
     override fun printDebugLog()
     {

@@ -1,4 +1,4 @@
-package com.github.phzhou76.retask.model.value
+package com.github.phzhou76.retask.model.value.numericvalue
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -10,8 +10,8 @@ class FloatVariable(variableName: String, floatValue: Float) : FloatValue(floatV
 
     constructor(parcel: Parcel) : this(
             parcel.readString()
-                    ?: throw NullPointerException("Parcel Error: FloatVariable"),   /* mValueName */
-            parcel.readFloat()                                                      /* mFloatValue */
+                    ?: throw NullPointerException("Parcel Error: FloatVariable (mValueName)"),  /* mValueName */
+            parcel.readFloat()                                                                  /* mFloatValue */
     )
 
     override fun printDebugLog()

@@ -3,6 +3,7 @@ package com.github.phzhou76.retask.model.statement
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
+import com.github.phzhou76.retask.model.value.numericvalue.FloatValue
 import java.util.*
 
 /**
@@ -12,18 +13,21 @@ import java.util.*
  *      point in the given rectangular region, specified by the top left coordinate
  *      and bottom right coordinate of the region.
  */
-class ClickRegionStatement(topLeftCoordinate: Pair<Float, Float>,
-                           bottomRightCoordinate: Pair<Float, Float>) : ClickStatement(Pair(0.0f, 0.0f))
+class ClickRegionStatement(topLeftCoordinate: Pair<FloatValue, FloatValue>,
+                           bottomRightCoordinate: Pair<FloatValue, FloatValue>)
+    : ClickStatement(Pair(FloatValue(0.0f), FloatValue(0.0f)))
 {
     /* Top left coordinate point of the clickable region. */
-    var mTopLeftCoordinate: Pair<Float, Float> = topLeftCoordinate
+    var mTopLeftCoordinate: Pair<FloatValue, FloatValue> = topLeftCoordinate
 
     /* Bottom right coordinate point of the clickable region. */
-    var mBottomRightCoordinate: Pair<Float, Float> = bottomRightCoordinate
+    var mBottomRightCoordinate: Pair<FloatValue, FloatValue> = bottomRightCoordinate
 
     constructor(parcel: Parcel) : this(
-            Pair(parcel.readFloat(), parcel.readFloat()),   /* mTopLeftCoordinate */
-            Pair(parcel.readFloat(), parcel.readFloat())    /* mBottomRightCoordinate */
+            Pair(parcel.readParcelable(FloatValue::class.java.classLoader),
+                    parcel.readParcelable(FloatValue::class.java.classLoader)),   /* mTopLeftCoordinate */
+            Pair(parcel.readParcelable(FloatValue::class.java.classLoader),
+                    parcel.readParcelable(FloatValue::class.java.classLoader))    /* mBottomRightCoordinate */
     )
 
     /**
@@ -71,10 +75,10 @@ class ClickRegionStatement(topLeftCoordinate: Pair<Float, Float>,
     /** Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)
     {
-        parcel.writeFloat(mTopLeftCoordinate.first)
-        parcel.writeFloat(mTopLeftCoordinate.second)
-        parcel.writeFloat(mBottomRightCoordinate.first)
-        parcel.writeFloat(mBottomRightCoordinate.second)
+        parcel.writeParcelable(mTopLeftCoordinate.first, flags)
+        parcel.writeParcelable(mTopLeftCoordinate.second, flags)
+        parcel.writeParcelable(mBottomRightCoordinate.first, flags)
+        parcel.writeParcelable(mBottomRightCoordinate.second, flags)
     }
 
     override fun describeContents(): Int

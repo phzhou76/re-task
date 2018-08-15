@@ -10,8 +10,8 @@ class BooleanVariable(variableName: String, booleanValue: Boolean) : BooleanValu
 
     constructor(parcel: Parcel) : this(
             parcel.readString()
-                    ?: throw NullPointerException("Parcel Error: BooleanVariable"), /* mValueName */
-            (parcel.readInt() == 1)                                                 /* mBooleanValue */
+                    ?: throw NullPointerException("Parcel Error: BooleanVariable (mValueName)"),    /* mValueName */
+            (parcel.readInt() == 1)                                                                 /* mBooleanValue */
     )
 
     override fun printDebugLog()

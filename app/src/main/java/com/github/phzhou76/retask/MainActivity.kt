@@ -15,11 +15,11 @@ import com.github.phzhou76.retask.model.TaskScript
 import com.github.phzhou76.retask.model.statement.ClickRegionStatement
 import com.github.phzhou76.retask.model.statement.WaitStatement
 import com.github.phzhou76.retask.model.value.BooleanValue
-import com.github.phzhou76.retask.model.value.FloatValue
-import com.github.phzhou76.retask.model.value.IntValue
+import com.github.phzhou76.retask.model.value.numericvalue.FloatValue
+import com.github.phzhou76.retask.model.value.numericvalue.IntValue
 import com.github.phzhou76.retask.model.value.BooleanVariable
-import com.github.phzhou76.retask.model.value.FloatVariable
-import com.github.phzhou76.retask.model.value.IntVariable
+import com.github.phzhou76.retask.model.value.numericvalue.FloatVariable
+import com.github.phzhou76.retask.model.value.numericvalue.IntVariable
 import com.github.phzhou76.retask.service.TaskProxyService
 import kotlinx.android.synthetic.main.activity_main.*
 

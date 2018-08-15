@@ -3,29 +3,26 @@ package com.github.phzhou76.retask.model.statement
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
+import com.github.phzhou76.retask.model.value.numericvalue.LongValue
 import java.util.concurrent.ThreadLocalRandom
 
-/**
- * A Statement that pauses the script for the input number of milliseconds.
- *
- * @constructor Creates a WaitStatement that pauses the script for the given
- *      time in milliseconds, with a randomized increase or decrease in time.
- */
-class WaitStatement(waitTime: Long, waitTimeVariance: Long) : Statement()
+class WaitStatement(waitTime: LongValue, waitTimeVariance: LongValue) : Statement()
 {
     /* Wait time in milliseconds. */
-    var mWaitTime: Long = waitTime
+    var mWaitTime: LongValue = waitTime
 
     /* Variation in wait time. Must be less than or equal to mWaitTime. */
-    var mWaitTimeVariance: Long = waitTimeVariance
+    var mWaitTimeVariance: LongValue = waitTimeVariance
 
     constructor(parcel: Parcel) : this(
-            parcel.readLong(),   /* mWaitTime */
-            parcel.readLong()   /* mWaitTimeVariance */
+            parcel.readParcelable(LongValue::class.java.classLoader)
+                    ?: throw NullPointerException("Parcel Error: WaitStatement"),   /* mWaitTime */
+            parcel.readParcelable(LongValue::class.java.classLoader)
+                    ?: throw NullPointerException("Parcel Error: WaitStatement")    /* mWaitTimeVariance */
     )
 
     /**
-     * Puts the script to sleep for the inputted wait time in milliseconds.
+     * Puts the script to sleep for the input wait time (in milliseconds).
      */
     override fun execute()
     {
@@ -65,15 +62,16 @@ class WaitStatement(waitTime: Long, waitTimeVariance: Long) : Statement()
      */
     private fun generateWaitTime(): Long
     {
-        return (mWaitTime - mWaitTimeVariance) +
-                ThreadLocalRandom.current().nextLong(0, 2 * mWaitTimeVariance + 1)
+        return (mWaitTime.mLongValue - mWaitTimeVariance.mLongValue) +
+                ThreadLocalRandom.current().nextLong(0,
+                        2 * mWaitTimeVariance.mLongValue + 1)
     }
 
     /** Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)
     {
-        parcel.writeLong(mWaitTime)
-        parcel.writeLong(mWaitTimeVariance)
+        parcel.writeParcelable(mWaitTime, flags)
+        parcel.writeParcelable(mWaitTimeVariance, flags)
     }
 
     override fun describeContents(): Int

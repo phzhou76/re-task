@@ -16,7 +16,7 @@ abstract class Operation(leftValue: Value?, rightValue: Value?) : Parcelable
      *
      * @return The result of the operation.
      */
-    abstract fun evaluateOperation(): RValue
+    abstract fun evaluateOperation(): Value
 
     /**
      * Determines if the left-hand and right-hand values are valid for the

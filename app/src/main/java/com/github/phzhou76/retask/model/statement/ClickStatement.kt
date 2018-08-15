@@ -5,6 +5,7 @@ import android.graphics.Path
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
+import com.github.phzhou76.retask.model.value.numericvalue.FloatValue
 import com.github.phzhou76.retask.service.TaskAccessibilityService
 
 /**
@@ -12,10 +13,10 @@ import com.github.phzhou76.retask.service.TaskAccessibilityService
  *
  * @constructor Creates a ClickStatement that clicks at the given coordinate point.
  */
-open class ClickStatement(clickCoordinate: Pair<Float, Float>) : Statement()
+open class ClickStatement(clickCoordinate: Pair<FloatValue, FloatValue>) : Statement()
 {
     /* Coordinate point to click at. */
-    open var mClickCoordinate: Pair<Float, Float> = clickCoordinate
+    open var mClickCoordinate: Pair<FloatValue, FloatValue> = clickCoordinate
         set(value)
         {
             field = value
@@ -29,7 +30,8 @@ open class ClickStatement(clickCoordinate: Pair<Float, Float>) : Statement()
     private lateinit var mGestureDescription: GestureDescription
 
     constructor(parcel: Parcel) : this(
-            Pair(parcel.readFloat(), parcel.readFloat())    /* mClickCoordinate */
+            Pair(parcel.readParcelable<FloatValue>(FloatValue::class.java.classLoader),
+                    parcel.readParcelable<FloatValue>(FloatValue::class.java.classLoader))    /* mClickCoordinate */
     )
 
     /**
@@ -67,7 +69,8 @@ open class ClickStatement(clickCoordinate: Pair<Float, Float>) : Statement()
 
         /* Only one point on the path for a single click. */
         val inputPath = Path()
-        inputPath.moveTo(mClickCoordinate.first, mClickCoordinate.second)
+        inputPath.moveTo(mClickCoordinate.first.mFloatValue,
+                mClickCoordinate.second.mFloatValue)
 
         /* Click should occur immediately. */
         val gestureStrokeDescription = GestureDescription.StrokeDescription(inputPath,
@@ -82,8 +85,8 @@ open class ClickStatement(clickCoordinate: Pair<Float, Float>) : Statement()
     /** Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)
     {
-        parcel.writeFloat(mClickCoordinate.first)
-        parcel.writeFloat(mClickCoordinate.second)
+        parcel.writeParcelable(mClickCoordinate.first, flags)
+        parcel.writeParcelable(mClickCoordinate.second, flags)
     }
 
     override fun describeContents(): Int

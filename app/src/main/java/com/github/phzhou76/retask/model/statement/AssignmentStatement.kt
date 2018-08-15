@@ -6,12 +6,12 @@ import android.util.Log
 import com.github.phzhou76.retask.model.operation.Operation
 import com.github.phzhou76.retask.model.value.ValueType
 import com.github.phzhou76.retask.model.value.BooleanValue
-import com.github.phzhou76.retask.model.value.FloatValue
-import com.github.phzhou76.retask.model.value.IntValue
+import com.github.phzhou76.retask.model.value.numericvalue.FloatValue
+import com.github.phzhou76.retask.model.value.numericvalue.IntValue
 import com.github.phzhou76.retask.model.value.rvalue.RValue
 import com.github.phzhou76.retask.model.value.BooleanVariable
-import com.github.phzhou76.retask.model.value.FloatVariable
-import com.github.phzhou76.retask.model.value.IntVariable
+import com.github.phzhou76.retask.model.value.numericvalue.FloatVariable
+import com.github.phzhou76.retask.model.value.numericvalue.IntVariable
 import com.github.phzhou76.retask.model.value.variable.Variable
 
 /**
@@ -97,11 +97,11 @@ class AssignmentStatement(variable: Variable, assignment: Operation) : Statement
     {
         when (assignmentValue)
         {
-            is BooleanValue ->
+            is BooleanValue                                                   ->
             {
                 (mVariable as BooleanVariable).mBooleanValue = assignmentValue.mBooleanValue
             }
-            is IntValue     ->
+            is IntValue   ->
             {
                 /* Cast the assignment value to a float type. */
                 if (mVariable.mValueType == ValueType.FLOAT)
@@ -113,7 +113,7 @@ class AssignmentStatement(variable: Variable, assignment: Operation) : Statement
                     (mVariable as IntVariable).mIntValue = assignmentValue.mIntValue
                 }
             }
-            is FloatValue   ->
+            is FloatValue ->
             {
                 /* Cast the assignment value to an int type. */
                 if (mVariable.mValueType == ValueType.INT)

@@ -1,10 +1,11 @@
-package com.github.phzhou76.retask.model.value
+package com.github.phzhou76.retask.model.value.numericvalue
 
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
+import com.github.phzhou76.retask.model.value.ValueType
 
-open class FloatValue(floatValue: Float) : Value(ValueType.FLOAT)
+open class FloatValue(floatValue: Float) : NumericValue(ValueType.FLOAT)
 {
     override var mValueName: String = "Float Value"
 
@@ -13,6 +14,22 @@ open class FloatValue(floatValue: Float) : Value(ValueType.FLOAT)
     constructor(parcel: Parcel) : this(
             parcel.readFloat()  /* mFloatValue */
     )
+
+    /** Evaluation methods. */
+    override fun evaluateValueAsInt(): Int
+    {
+        return mFloatValue.toInt()
+    }
+
+    override fun evaluateValueAsFloat(): Float
+    {
+        return mFloatValue
+    }
+
+    override fun evaluateValueAsLong(): Long
+    {
+        return mFloatValue.toLong()
+    }
 
     override fun printDebugLog()
     {

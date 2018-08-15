@@ -1,4 +1,4 @@
-package com.github.phzhou76.retask.model.value
+package com.github.phzhou76.retask.model.value.numericvalue
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -10,8 +10,8 @@ class LongVariable(variableName: String, longValue: Long) : LongValue(longValue)
 
     constructor(parcel: Parcel) : this(
             parcel.readString()
-                    ?: throw NullPointerException("Parcel Error: LongVariable"),    /* mValueName */
-            parcel.readLong()                                                       /* mLongValue */
+                    ?: throw NullPointerException("Parcel Error: LongVariable (mValueName)"),   /* mValueName */
+            parcel.readLong()                                                                   /* mLongValue */
     )
 
     override fun printDebugLog()
