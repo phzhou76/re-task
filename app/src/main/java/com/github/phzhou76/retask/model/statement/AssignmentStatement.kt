@@ -9,9 +9,9 @@ import com.github.phzhou76.retask.model.value.BooleanValue
 import com.github.phzhou76.retask.model.value.FloatValue
 import com.github.phzhou76.retask.model.value.IntValue
 import com.github.phzhou76.retask.model.value.rvalue.RValue
-import com.github.phzhou76.retask.model.value.variable.BooleanVariable
-import com.github.phzhou76.retask.model.value.variable.FloatVariable
-import com.github.phzhou76.retask.model.value.variable.IntVariable
+import com.github.phzhou76.retask.model.value.BooleanVariable
+import com.github.phzhou76.retask.model.value.FloatVariable
+import com.github.phzhou76.retask.model.value.IntVariable
 import com.github.phzhou76.retask.model.value.variable.Variable
 
 /**

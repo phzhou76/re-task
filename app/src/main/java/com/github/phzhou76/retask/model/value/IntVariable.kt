@@ -1,28 +1,18 @@
-package com.github.phzhou76.retask.model.value.variable
+package com.github.phzhou76.retask.model.value
 
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
-import com.github.phzhou76.retask.model.value.IntValue
-import com.github.phzhou76.retask.model.value.Value
-import com.github.phzhou76.retask.model.value.ValueType
 
-class IntVariable(variableName: String, intValue: Int)
-    : Variable(ValueType.INT, variableName)
+class IntVariable(variableName: String, intValue: Int) : IntValue(intValue)
 {
-    /* Int value that the Variable holds. */
-    var mIntValue: Int = intValue
+    override var mValueName: String = variableName
 
     constructor(parcel: Parcel) : this(
             parcel.readString()
-                    ?: throw NullPointerException("Parcel Error: IntVariable (mVariableName)"), /* mVariableName */
-            parcel.readInt()                                                                    /* mLongValue */
+                    ?: throw NullPointerException("Parcel Error: IntVariable"), /* mValueName */
+            parcel.readInt()                                                    /* mLongValue */
     )
-
-    override fun evaluateValue(): Value
-    {
-        return IntValue(mIntValue)
-    }
 
     override fun printDebugLog()
     {
@@ -31,13 +21,13 @@ class IntVariable(variableName: String, intValue: Int)
 
     override fun toString(): String
     {
-        return "$mVariableName: $mIntValue"
+        return "$mValueName: $mIntValue"
     }
 
     /** Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)
     {
-        parcel.writeString(mVariableName)
+        parcel.writeString(mValueName)
         parcel.writeInt(mIntValue)
     }
 

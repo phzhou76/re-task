@@ -1,28 +1,18 @@
-package com.github.phzhou76.retask.model.value.variable
+package com.github.phzhou76.retask.model.value
 
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
-import com.github.phzhou76.retask.model.value.BooleanValue
-import com.github.phzhou76.retask.model.value.Value
-import com.github.phzhou76.retask.model.value.ValueType
 
-class BooleanVariable(variableName: String, booleanValue: Boolean)
-    : Variable(ValueType.BOOLEAN, variableName)
+class BooleanVariable(variableName: String, booleanValue: Boolean) : BooleanValue(booleanValue)
 {
-    /* Boolean value that the Variable holds. */
-    var mBooleanValue: Boolean = booleanValue
+    override var mValueName: String = variableName
 
     constructor(parcel: Parcel) : this(
             parcel.readString()
-                    ?: throw NullPointerException("Parcel Error: BooleanVariable (mVariableName)"), /* mVariableName */
-            (parcel.readInt() == 1)                                                                 /* mBooleanValue */
+                    ?: throw NullPointerException("Parcel Error: BooleanVariable"), /* mValueName */
+            (parcel.readInt() == 1)                                                 /* mBooleanValue */
     )
-
-    override fun evaluateValue(): Value
-    {
-        return BooleanValue(mBooleanValue)
-    }
 
     override fun printDebugLog()
     {
@@ -31,13 +21,13 @@ class BooleanVariable(variableName: String, booleanValue: Boolean)
 
     override fun toString(): String
     {
-        return "$mVariableName: " + (if (mBooleanValue) "true" else "false")
+        return "$mValueName: " + (if (mBooleanValue) "true" else "false")
     }
 
     /** Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)
     {
-        parcel.writeString(mVariableName)
+        parcel.writeString(mValueName)
         parcel.writeInt(if (mBooleanValue) 1 else 0)
     }
 

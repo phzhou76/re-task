@@ -4,8 +4,10 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
 
-class FloatValue(floatValue: Float) : Value(ValueType.FLOAT)
+open class FloatValue(floatValue: Float) : Value(ValueType.FLOAT)
 {
+    override var mValueName: String = "Float Value"
+
     var mFloatValue: Float = floatValue
 
     constructor(parcel: Parcel) : this(
@@ -14,7 +16,7 @@ class FloatValue(floatValue: Float) : Value(ValueType.FLOAT)
 
     override fun printDebugLog()
     {
-        Log.d(TAG, "Float Value: " + this)
+        Log.d(TAG, mValueName + ": " + this)
     }
 
     override fun toString(): String

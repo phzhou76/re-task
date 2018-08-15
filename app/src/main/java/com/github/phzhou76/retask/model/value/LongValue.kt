@@ -4,8 +4,10 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
 
-class LongValue(longValue: Long) : Value(ValueType.LONG)
+open class LongValue(longValue: Long) : Value(ValueType.LONG)
 {
+    override var mValueName: String = "Long Value"
+
     var mLongValue: Long = longValue
 
     constructor(parcel: Parcel) : this(
@@ -14,7 +16,7 @@ class LongValue(longValue: Long) : Value(ValueType.LONG)
 
     override fun printDebugLog()
     {
-        Log.d(TAG, "Long Value: " + this)
+        Log.d(TAG, mValueName + ": " + this)
     }
 
     override fun toString(): String

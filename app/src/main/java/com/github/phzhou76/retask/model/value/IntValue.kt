@@ -4,8 +4,10 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
 
-class IntValue(intValue: Int) : Value(ValueType.INT)
+open class IntValue(intValue: Int) : Value(ValueType.INT)
 {
+    override var mValueName: String = "Integer Value"
+
     var mIntValue: Int = intValue
 
     constructor(parcel: Parcel) : this(
@@ -14,7 +16,7 @@ class IntValue(intValue: Int) : Value(ValueType.INT)
 
     override fun printDebugLog()
     {
-        Log.d(TAG, "Integer Value: " + this)
+        Log.d(TAG, mValueName + ": " + this)
     }
 
     override fun toString(): String

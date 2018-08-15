@@ -4,8 +4,10 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
 
-class BooleanValue(booleanValue: Boolean) : Value(ValueType.BOOLEAN)
+open class BooleanValue(booleanValue: Boolean) : Value(ValueType.BOOLEAN)
 {
+    override var mValueName: String = "Boolean Value"
+
     var mBooleanValue: Boolean = booleanValue
 
     constructor(parcel: Parcel) : this(
@@ -14,7 +16,7 @@ class BooleanValue(booleanValue: Boolean) : Value(ValueType.BOOLEAN)
 
     override fun printDebugLog()
     {
-        Log.d(TAG, "Boolean Value: " + this)
+        Log.d(TAG, "$mValueName : $this")
     }
 
     override fun toString(): String

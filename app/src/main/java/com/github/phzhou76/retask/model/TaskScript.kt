@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
 import com.github.phzhou76.retask.model.statement.StatementBlock
-import com.github.phzhou76.retask.model.value.variable.Variable
+import com.github.phzhou76.retask.model.value.Value
 
 /**
  * Holds the variables and the script that relies on it for execution. It also
@@ -12,8 +12,8 @@ import com.github.phzhou76.retask.model.value.variable.Variable
  */
 class TaskScript() : Parcelable
 {
-    /* Hash map of variables' names to their Variable object. */
-    var mVariables: HashMap<String, Variable> = HashMap()
+    /* Hash map of variables' names to their respective objects. */
+    var mVariables: HashMap<String, Value> = HashMap()
 
     /* Task script contents. */
     var mTaskScript: StatementBlock = StatementBlock()
@@ -21,9 +21,6 @@ class TaskScript() : Parcelable
     constructor(parcel: Parcel) : this()
     {
         readScriptFromParcel(parcel)
-
-        /* TaskScript should be statically accessible in proxy service. */
-        TaskScript.SHARED_INSTANCE = this
     }
 
     /**
@@ -57,13 +54,14 @@ class TaskScript() : Parcelable
         }
 
         Log.d(TAG, "Statements Section:")
-
     }
 
     /**
      * Recreates the TaskScript object using data from the Parcel.
      *
      * @param parcel The Parcel object that encapsulates the TaskScript data.
+     *
+     * @throws NullPointerException Thrown if a Parcel read error occurred.
      */
     private fun readScriptFromParcel(parcel: Parcel)
     {
@@ -73,15 +71,15 @@ class TaskScript() : Parcelable
         for (i in 0 until variableCount)
         {
             val variableName: String = parcel.readString()
-                    ?: throw NullPointerException("Parcel Error: TaskScript (mVariables)")
-            val variable: Variable = parcel.readParcelable(Variable::class.java.classLoader)
-                    ?: throw NullPointerException("Parcel Error: TaskScript (mVariables)")
+                    ?: throw NullPointerException("Parcel Error: TaskScript")
+            val variable: Value = parcel.readParcelable(Value::class.java.classLoader)
+                    ?: throw NullPointerException("Parcel Error: TaskScript")
             mVariables[variableName] = variable
         }
 
         /* Read script data and recreate it. */
         mTaskScript = parcel.readParcelable(StatementBlock::class.java.classLoader)
-                ?: throw NullPointerException("Parcel Error: TaskScript (mTaskScript)")
+                ?: throw NullPointerException("Parcel Error: TaskScript")
     }
 
     /**
@@ -118,8 +116,6 @@ class TaskScript() : Parcelable
     {
         private val TAG: String = TaskScript::class.java.simpleName
 
-        private var SHARED_INSTANCE: TaskScript? = null
-
         override fun createFromParcel(parcel: Parcel): TaskScript
         {
             return TaskScript(parcel)
@@ -128,17 +124,6 @@ class TaskScript() : Parcelable
         override fun newArray(size: Int): Array<TaskScript?>
         {
             return arrayOfNulls(size)
-        }
-
-        /**
-         * Singleton implementation. Allows the TaskScript and its Variables to
-         * be accessible once the TaskScript object has been sent to the proxy service.
-         *
-         * @return The instance of TaskScript.
-         */
-        fun getSharedInstance(): TaskScript?
-        {
-            return SHARED_INSTANCE
         }
     }
 }

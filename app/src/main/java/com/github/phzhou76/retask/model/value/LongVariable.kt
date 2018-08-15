@@ -1,28 +1,18 @@
-package com.github.phzhou76.retask.model.value.variable
+package com.github.phzhou76.retask.model.value
 
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
-import com.github.phzhou76.retask.model.value.LongValue
-import com.github.phzhou76.retask.model.value.Value
-import com.github.phzhou76.retask.model.value.ValueType
 
-class LongVariable(variableName: String, longValue: Long)
-    : Variable(ValueType.LONG, variableName)
+class LongVariable(variableName: String, longValue: Long) : LongValue(longValue)
 {
-    /* Long value that the Variable holds. */
-    var mLongValue: Long = longValue
+    override var mValueName: String = variableName
 
     constructor(parcel: Parcel) : this(
             parcel.readString()
-                    ?: throw NullPointerException("Parcel Error: LongVariable (mVariableName)"), /* mVariableName */
-            parcel.readLong()                                                                    /* mLongValue */
+                    ?: throw NullPointerException("Parcel Error: LongVariable"),    /* mValueName */
+            parcel.readLong()                                                       /* mLongValue */
     )
-
-    override fun evaluateValue(): Value
-    {
-        return LongValue(mLongValue)
-    }
 
     override fun printDebugLog()
     {
@@ -31,13 +21,13 @@ class LongVariable(variableName: String, longValue: Long)
 
     override fun toString(): String
     {
-        return "$mVariableName: $mLongValue"
+        return "$mValueName: $mLongValue"
     }
 
     /** Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)
     {
-        parcel.writeString(mVariableName)
+        parcel.writeString(mValueName)
         parcel.writeLong(mLongValue)
     }
 

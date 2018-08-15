@@ -4,17 +4,11 @@ import android.os.Parcelable
 
 abstract class Value(valueType: ValueType) : Parcelable
 {
+    /* Name of the Value. */
+    open var mValueName: String = "Value"
+
     /* Type of the Value. */
     val mValueType: ValueType = valueType
-
-    /**
-     * Returns this Value. Should be used by extending classes to extract a Value
-     * from them.
-     */
-    open fun evaluateValue(): Value
-    {
-        return this
-    }
 
     abstract fun printDebugLog()
 }

@@ -1,28 +1,18 @@
-package com.github.phzhou76.retask.model.value.variable
+package com.github.phzhou76.retask.model.value
 
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
-import com.github.phzhou76.retask.model.value.FloatValue
-import com.github.phzhou76.retask.model.value.Value
-import com.github.phzhou76.retask.model.value.ValueType
 
-class FloatVariable(variableName: String, floatValue: Float)
-    : Variable(ValueType.FLOAT, variableName)
+class FloatVariable(variableName: String, floatValue: Float) : FloatValue(floatValue)
 {
-    /* Float value that the Variable holds. */
-    var mFloatValue: Float = floatValue
+    override var mValueName: String = variableName
 
     constructor(parcel: Parcel) : this(
             parcel.readString()
-                    ?: throw NullPointerException("Parcel Error: FloatVariable (mVariableName)"),   /* mFloatVariable */
-            parcel.readFloat()                                                                      /* mFloatValue */
+                    ?: throw NullPointerException("Parcel Error: FloatVariable"),   /* mValueName */
+            parcel.readFloat()                                                      /* mFloatValue */
     )
-
-    override fun evaluateValue(): Value
-    {
-        return FloatValue(mFloatValue)
-    }
 
     override fun printDebugLog()
     {
@@ -31,13 +21,13 @@ class FloatVariable(variableName: String, floatValue: Float)
 
     override fun toString(): String
     {
-        return "$mVariableName: $mFloatValue"
+        return "$mValueName: $mFloatValue"
     }
 
     /** Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)
     {
-        parcel.writeString(mVariableName)
+        parcel.writeString(mValueName)
         parcel.writeFloat(mFloatValue)
     }
 
