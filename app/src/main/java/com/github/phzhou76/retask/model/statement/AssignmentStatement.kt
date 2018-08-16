@@ -4,15 +4,11 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
 import com.github.phzhou76.retask.model.operation.Operation
-import com.github.phzhou76.retask.model.value.ValueType
 import com.github.phzhou76.retask.model.value.BooleanValue
-import com.github.phzhou76.retask.model.value.numericvalue.FloatValue
-import com.github.phzhou76.retask.model.value.numericvalue.IntValue
-import com.github.phzhou76.retask.model.value.rvalue.RValue
 import com.github.phzhou76.retask.model.value.BooleanVariable
-import com.github.phzhou76.retask.model.value.numericvalue.FloatVariable
-import com.github.phzhou76.retask.model.value.numericvalue.IntVariable
-import com.github.phzhou76.retask.model.value.variable.Variable
+import com.github.phzhou76.retask.model.value.Value
+import com.github.phzhou76.retask.model.value.ValueType
+import com.github.phzhou76.retask.model.value.numericvalue.*
 
 /**
  * A Statement that assigns the result of an Operation to a Variable.
@@ -20,19 +16,19 @@ import com.github.phzhou76.retask.model.value.variable.Variable
  * @constructor Creates an AssignmentStatement object that evaluates the result
  *      of the Operation and assigns the value to the Variable.
  */
-class AssignmentStatement(variable: Variable, assignment: Operation) : Statement()
+class AssignmentStatement(variable: Value, assignment: Operation) : Statement()
 {
     /* Variable to assign a new value to. */
-    var mVariable: Variable = variable
+    var mVariable: Value = variable
 
-    /* Operation whose value will be assigned to the Variable. */
+    /* Operation whose result will be assigned to the Variable. */
     var mAssignment: Operation = assignment
 
     constructor(parcel: Parcel) : this(
-            parcel.readParcelable<Variable>(Variable::class.java.classLoader)
-                    ?: throw NullPointerException("Parcel Error: AssignmentStatement (mVariable)"),     /* mVariable */
+            parcel.readParcelable(Value::class.java.classLoader)
+                    ?: throw NullPointerException("Parcel Error: $TAG (mVariable)"),     /* mVariable */
             parcel.readParcelable<Operation>(Operation::class.java.classLoader)
-                    ?: throw NullPointerException("Parcel Error: AssignmentStatement (mAssignment)")    /* mAssignment */
+                    ?: throw NullPointerException("Parcel Error: $TAG (mAssignment)")    /* mAssignment */
     )
 
     /**
@@ -41,17 +37,7 @@ class AssignmentStatement(variable: Variable, assignment: Operation) : Statement
      */
     override fun execute()
     {
-        val assignmentResult: RValue = mAssignment.evaluateOperation()
-
-        val variableType = mVariable.mValueType
-        val assignmentType = assignmentResult.mValueType
-
-        if (!determineValidAssignment(variableType, assignmentType))
-        {
-            throw IllegalArgumentException("AssignmentStatement: Invalid inputs.")
-        }
-
-        assignVariable(assignmentResult)
+        assignVariable()
     }
 
     override fun printDebugLog()
@@ -77,53 +63,46 @@ class AssignmentStatement(variable: Variable, assignment: Operation) : Statement
     private fun determineValidAssignment(variableType: ValueType, assignmentType: ValueType)
             : Boolean
     {
-        return if (variableType == ValueType.BOOLEAN && assignmentType != ValueType.BOOLEAN)
-        {
-            false
-        }
-        else !(variableType != ValueType.BOOLEAN && assignmentType == ValueType.BOOLEAN)
+        return !((variableType == ValueType.BOOLEAN && assignmentType != ValueType.BOOLEAN) ||
+                (variableType != ValueType.BOOLEAN && assignmentType == ValueType.BOOLEAN))
     }
 
     /**
      * Assigns the assignment's value to the Variable, and performs any casting
-     * if necessary, such as ints to float variables. Type checking with
-     * determineValidAssignment must be done prior to calling this method, since
-     * this method assumes that the Variable and the assignment values' types are
-     * compatible.
+     * if necessary, such as int to float variables.
      *
-     * @param assignmentValue The value that will be assigned to the Variable.
+     * @throws IllegalArgumentException Thrown if the two types are incompatible.
      */
-    private fun assignVariable(assignmentValue: RValue)
+    private fun assignVariable()
     {
-        when (assignmentValue)
+        if (!determineValidAssignment(mVariable.mValueType, mAssignment.evaluateValueType()))
         {
-            is BooleanValue                                                   ->
+            throw IllegalArgumentException("Invalid Inputs: $TAG")
+        }
+
+        val assignmentResult: Value = mAssignment.evaluateOperation()
+        val variableCopy: Value = mVariable
+
+        when (variableCopy)
+        {
+            is BooleanVariable ->
             {
-                (mVariable as BooleanVariable).mBooleanValue = assignmentValue.mBooleanValue
+                variableCopy.mBooleanValue = (assignmentResult as BooleanValue).mBooleanValue
             }
-            is IntValue   ->
+            is FloatVariable   ->
             {
-                /* Cast the assignment value to a float type. */
-                if (mVariable.mValueType == ValueType.FLOAT)
-                {
-                    (mVariable as FloatVariable).mFloatValue = assignmentValue.mIntValue.toFloat()
-                }
-                else
-                {
-                    (mVariable as IntVariable).mIntValue = assignmentValue.mIntValue
-                }
+                val numericResult: NumericValue = (assignmentResult as NumericValue)
+                variableCopy.mFloatValue = numericResult.toFloatValue().mFloatValue
             }
-            is FloatValue ->
+            is LongVariable    ->
             {
-                /* Cast the assignment value to an int type. */
-                if (mVariable.mValueType == ValueType.INT)
-                {
-                    (mVariable as IntVariable).mIntValue = assignmentValue.mFloatValue.toInt()
-                }
-                else
-                {
-                    (mVariable as FloatVariable).mFloatValue = assignmentValue.mFloatValue
-                }
+                val numericResult: NumericValue = (assignmentResult as NumericValue)
+                variableCopy.mLongValue = numericResult.toLongValue().mLongValue
+            }
+            is IntVariable     ->
+            {
+                val numericResult: NumericValue = (assignmentResult as NumericValue)
+                variableCopy.mIntValue = numericResult.toIntValue().mIntValue
             }
         }
     }

@@ -10,18 +10,18 @@ class IntVariable(variableName: String, intValue: Int) : IntValue(intValue)
 
     constructor(parcel: Parcel) : this(
             parcel.readString()
-                    ?: throw NullPointerException("Parcel Error: IntVariable (mValueName)"),    /* mValueName */
-            parcel.readInt()                                                                    /* mIntValue */
+                    ?: throw NullPointerException("Parcel Error: $TAG (mValueName)"),   /* mValueName */
+            parcel.readInt()                                                            /* mIntValue */
     )
 
     override fun printDebugLog()
     {
-        Log.d(TAG, this.toString())
+        Log.d(TAG, "$mValueName: $mIntValue")
     }
 
     override fun toString(): String
     {
-        return "$mValueName: $mIntValue"
+        return mValueName
     }
 
     /** Parcelable implementation. */

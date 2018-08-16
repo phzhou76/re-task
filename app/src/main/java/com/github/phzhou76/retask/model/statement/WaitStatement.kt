@@ -6,6 +6,12 @@ import android.util.Log
 import com.github.phzhou76.retask.model.value.numericvalue.LongValue
 import java.util.concurrent.ThreadLocalRandom
 
+/**
+ * A Statement that puts the script to sleep for a given amount of time.
+ *
+ * @constructor Creates a WaitStatement that pauses the script for the input
+ *      amount of time, with some variance.
+ */
 class WaitStatement(waitTime: LongValue, waitTimeVariance: LongValue) : Statement()
 {
     /* Wait time in milliseconds. */
@@ -16,13 +22,15 @@ class WaitStatement(waitTime: LongValue, waitTimeVariance: LongValue) : Statemen
 
     constructor(parcel: Parcel) : this(
             parcel.readParcelable(LongValue::class.java.classLoader)
-                    ?: throw NullPointerException("Parcel Error: WaitStatement"),   /* mWaitTime */
+                    ?: throw NullPointerException("Parcel Error: $TAG (mWaitTime)"),       /* mWaitTime */
             parcel.readParcelable(LongValue::class.java.classLoader)
-                    ?: throw NullPointerException("Parcel Error: WaitStatement")    /* mWaitTimeVariance */
+                    ?: throw NullPointerException("Parcel Error: $TAG (mWaitTimeVariance") /* mWaitTimeVariance */
     )
 
     /**
-     * Puts the script to sleep for the input wait time (in milliseconds).
+     * Puts the script to sleep for the input wait time (in milliseconds). The
+     * script will be paused in 1000 ms intervals to check if the user manually
+     * stopped the script.
      */
     override fun execute()
     {
@@ -51,8 +59,7 @@ class WaitStatement(waitTime: LongValue, waitTimeVariance: LongValue) : Statemen
 
     override fun toString(): String
     {
-        return "Wait for: " + mWaitTime.toString() + " " + (177).toChar() +
-                " " + mWaitTimeVariance.toString() + " ms"
+        return "Wait for: $mWaitTime ms ${(177).toChar()} $mWaitTimeVariance ms"
     }
 
     /**

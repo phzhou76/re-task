@@ -16,24 +16,24 @@ open class FloatValue(floatValue: Float) : NumericValue(ValueType.FLOAT)
     )
 
     /** Evaluation methods. */
-    override fun evaluateValueAsInt(): Int
+    override fun toIntValue(): IntValue
     {
-        return mFloatValue.toInt()
+        return IntValue(mFloatValue.toInt())
     }
 
-    override fun evaluateValueAsFloat(): Float
+    override fun toFloatValue(): FloatValue
     {
-        return mFloatValue
+        return this
     }
 
-    override fun evaluateValueAsLong(): Long
+    override fun toLongValue(): LongValue
     {
-        return mFloatValue.toLong()
+        return LongValue(mFloatValue.toLong())
     }
 
     override fun printDebugLog()
     {
-        Log.d(TAG, mValueName + ": " + this)
+        Log.d(TAG, "$mValueName: $mFloatValue")
     }
 
     override fun toString(): String

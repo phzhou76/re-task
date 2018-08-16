@@ -10,18 +10,18 @@ class FloatVariable(variableName: String, floatValue: Float) : FloatValue(floatV
 
     constructor(parcel: Parcel) : this(
             parcel.readString()
-                    ?: throw NullPointerException("Parcel Error: FloatVariable (mValueName)"),  /* mValueName */
-            parcel.readFloat()                                                                  /* mFloatValue */
+                    ?: throw NullPointerException("Parcel Error: $TAG (mValueName)"),   /* mValueName */
+            parcel.readFloat()                                                          /* mFloatValue */
     )
 
     override fun printDebugLog()
     {
-        Log.d(TAG, this.toString())
+        Log.d(TAG, "$mValueName: $mFloatValue")
     }
 
     override fun toString(): String
     {
-        return "$mValueName: $mFloatValue"
+        return mValueName
     }
 
     /** Parcelable implementation. */

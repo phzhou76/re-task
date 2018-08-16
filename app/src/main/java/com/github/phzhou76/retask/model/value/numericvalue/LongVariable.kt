@@ -10,18 +10,18 @@ class LongVariable(variableName: String, longValue: Long) : LongValue(longValue)
 
     constructor(parcel: Parcel) : this(
             parcel.readString()
-                    ?: throw NullPointerException("Parcel Error: LongVariable (mValueName)"),   /* mValueName */
-            parcel.readLong()                                                                   /* mLongValue */
+                    ?: throw NullPointerException("Parcel Error: $TAG (mValueName)"),   /* mValueName */
+            parcel.readLong()                                                           /* mLongValue */
     )
 
     override fun printDebugLog()
     {
-        Log.d(TAG, this.toString())
+        Log.d(TAG, "$mValueName: $mLongValue")
     }
 
     override fun toString(): String
     {
-        return "$mValueName: $mLongValue"
+        return mValueName
     }
 
     /** Parcelable implementation. */

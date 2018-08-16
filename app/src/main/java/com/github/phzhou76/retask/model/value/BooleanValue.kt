@@ -16,7 +16,7 @@ open class BooleanValue(booleanValue: Boolean) : Value(ValueType.BOOLEAN)
 
     override fun printDebugLog()
     {
-        Log.d(TAG, "$mValueName : $this")
+        Log.d(TAG, "$mValueName: " + (if (mBooleanValue) "true" else "false"))
     }
 
     override fun toString(): String

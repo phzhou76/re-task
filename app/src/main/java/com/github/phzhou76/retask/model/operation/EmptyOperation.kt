@@ -3,8 +3,7 @@ package com.github.phzhou76.retask.model.operation
 import android.os.Parcel
 import android.os.Parcelable
 import com.github.phzhou76.retask.model.value.Value
-import com.github.phzhou76.retask.model.value.rvalue.RValue
-import com.github.phzhou76.retask.model.value.variable.Variable
+import com.github.phzhou76.retask.model.value.ValueType
 
 /**
  * Holds a Variable or Value with no operations applied to it.
@@ -18,28 +17,28 @@ class EmptyOperation(value: Value?) : Operation(value, null)
     )
 
     /**
+     * Returns the type of the Value.
+     *
+     * @throws NullPointerException Thrown if mLeftValue is null.
+     *
+     * @return The type of the Value.
+     */
+    override fun evaluateValueType(): ValueType
+    {
+        return mLeftValue?.mValueType
+                ?: throw NullPointerException("Null Input: $TAG")
+    }
+
+    /**
      * Returns the Variable's Value or RValue.
      *
-     * @throws IllegalArgumentException Thrown if mLeftValue is not a Variable or
-     *      RValue.
      * @throws NullPointerException Thrown if mLeftValue is null.
      *
      * @return Variable's Value or RValue.
      */
-    override fun evaluateOperation(): RValue
+    override fun evaluateOperation(): Value
     {
-        val valueCopy: Value? = mLeftValue
-
-        valueCopy?.let {
-            return when (it)
-            {
-                is Variable -> it.getValue()
-                is RValue   -> it
-                else        -> throw IllegalArgumentException("InvalidArgumentException: EmptyOperation")
-            }
-        }
-
-        throw NullPointerException("NullPointerException: EmptyOperation")
+        return mLeftValue ?: throw NullPointerException("Null Input: $TAG")
     }
 
     /**
@@ -70,6 +69,8 @@ class EmptyOperation(value: Value?) : Operation(value, null)
 
     companion object CREATOR : Parcelable.Creator<EmptyOperation>
     {
+        private val TAG: String = EmptyOperation::class.java.simpleName
+
         override fun createFromParcel(parcel: Parcel): EmptyOperation
         {
             return EmptyOperation(parcel)

@@ -10,18 +10,18 @@ class BooleanVariable(variableName: String, booleanValue: Boolean) : BooleanValu
 
     constructor(parcel: Parcel) : this(
             parcel.readString()
-                    ?: throw NullPointerException("Parcel Error: BooleanVariable (mValueName)"),    /* mValueName */
-            (parcel.readInt() == 1)                                                                 /* mBooleanValue */
+                    ?: throw NullPointerException("Parcel Error: $TAG (mValueName)"),   /* mValueName */
+            (parcel.readInt() == 1)                                                     /* mBooleanValue */
     )
 
     override fun printDebugLog()
     {
-        Log.d(TAG, this.toString())
+        Log.d(TAG, "$mValueName: " + (if (mBooleanValue) "true" else "false"))
     }
 
     override fun toString(): String
     {
-        return "$mValueName: " + (if (mBooleanValue) "true" else "false")
+        return mValueName
     }
 
     /** Parcelable implementation. */

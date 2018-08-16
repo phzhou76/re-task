@@ -9,6 +9,11 @@ class Coordinate(xCoordinate: FloatValue, yCoordinate: FloatValue) : Parcelable
     var mXCoordinate: FloatValue = xCoordinate
     var mYCoordinate: FloatValue = yCoordinate
 
+    /**
+     * Initializes Coordinate with default value (0, 0).
+     */
+    constructor() : this(FloatValue(0.0f), FloatValue(0.0f))
+
     constructor(parcel: Parcel) : this(
             parcel.readParcelable(FloatValue::class.java.classLoader)
                     ?: throw NullPointerException("Parcel Error: Coordinate (mXCoordinate)"),   /* mXCoordinate */
@@ -16,6 +21,12 @@ class Coordinate(xCoordinate: FloatValue, yCoordinate: FloatValue) : Parcelable
                     ?: throw NullPointerException("Parcel Error: Coordinate (mYCoordinate)")    /* mYCoordinate */
     )
 
+    override fun toString(): String
+    {
+        return "($mXCoordinate, $mYCoordinate)"
+    }
+
+    /** Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)
     {
         parcel.writeParcelable(mXCoordinate, flags)

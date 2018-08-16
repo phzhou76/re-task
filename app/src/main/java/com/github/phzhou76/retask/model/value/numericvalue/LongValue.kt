@@ -16,24 +16,24 @@ open class LongValue(longValue: Long) : NumericValue(ValueType.LONG)
     )
 
     /** Evaluation methods. */
-    override fun evaluateValueAsInt(): Int
+    override fun toIntValue(): IntValue
     {
-        return mLongValue.toInt()
+        return IntValue(mLongValue.toInt())
     }
 
-    override fun evaluateValueAsFloat(): Float
+    override fun toFloatValue(): FloatValue
     {
-        return mLongValue.toFloat()
+        return FloatValue(mLongValue.toFloat())
     }
 
-    override fun evaluateValueAsLong(): Long
+    override fun toLongValue(): LongValue
     {
-        return mLongValue
+        return this
     }
 
     override fun printDebugLog()
     {
-        Log.d(TAG, mValueName + ": " + this)
+        Log.d(TAG, "$mValueName: $mLongValue")
     }
 
     override fun toString(): String

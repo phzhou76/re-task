@@ -1,10 +1,9 @@
 package com.github.phzhou76.retask.model.operation.equalityoperation
 
 import com.github.phzhou76.retask.model.operation.Operation
+import com.github.phzhou76.retask.model.value.BooleanValue
 import com.github.phzhou76.retask.model.value.Value
 import com.github.phzhou76.retask.model.value.ValueType
-import com.github.phzhou76.retask.model.value.BooleanValue
-import com.github.phzhou76.retask.model.value.rvalue.RValue
 
 abstract class EqualityOperation(leftValue: Value?, rightValue: Value?)
     : Operation(leftValue, rightValue)
@@ -16,7 +15,7 @@ abstract class EqualityOperation(leftValue: Value?, rightValue: Value?)
      *
      * @return A BooleanValue object.
      */
-    override fun evaluateOperation(): RValue
+    override fun evaluateOperation(): BooleanValue
     {
         return evaluateBooleanOperation()
     }
@@ -24,7 +23,7 @@ abstract class EqualityOperation(leftValue: Value?, rightValue: Value?)
     /**
      * Determines if the operation has valid inputs. In this case, the operation
      * is valid if both inputs are of type boolean, or if both inputs are of type
-     * float or int.
+     * float, long, or int.
      *
      * @throws NullPointerException Thrown if either input is null.
      *

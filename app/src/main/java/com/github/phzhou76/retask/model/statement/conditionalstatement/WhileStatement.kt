@@ -19,9 +19,9 @@ class WhileStatement(trueCondition: EqualityOperation?, trueBlock: StatementBloc
 {
     constructor(parcel: Parcel) : this(
             parcel.readParcelable(EqualityOperation::class.java.classLoader)
-                    ?: throw NullPointerException("Parcel Error: WhileStatement (mTrueCondition)"),     /* mTrueCondition */
+                    ?: throw NullPointerException("Parcel Error: $TAG (mTrueCondition)"),     /* mTrueCondition */
             parcel.readParcelable(StatementBlock::class.java.classLoader)
-                    ?: throw NullPointerException("Parcel Error: WhileStatement (mTrueBlock)")          /* mTrueBlock */
+                    ?: throw NullPointerException("Parcel Error: $TAG (mTrueBlock)")          /* mTrueBlock */
     )
 
     /**

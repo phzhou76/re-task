@@ -10,19 +10,19 @@ abstract class NumericValue(valueType: ValueType) : Value(valueType)
      *
      * @return The value as an integer.
      */
-    abstract fun evaluateValueAsInt(): Int
+    abstract fun toIntValue(): IntValue
 
     /**
      * Evaluate the value as a float value.
      *
      * @return The value as a float.
      */
-    abstract fun evaluateValueAsFloat(): Float
+    abstract fun toFloatValue(): FloatValue
 
     /**
      * Evaluate the value as a long value.
      *
      * @return The value as a long.
      */
-    abstract fun evaluateValueAsLong(): Long
+    abstract fun toLongValue(): LongValue
 }

@@ -3,6 +3,7 @@ package com.github.phzhou76.retask.model.statement
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
+import com.github.phzhou76.retask.model.value.Coordinate
 import com.github.phzhou76.retask.model.value.numericvalue.FloatValue
 import java.util.*
 
@@ -13,21 +14,20 @@ import java.util.*
  *      point in the given rectangular region, specified by the top left coordinate
  *      and bottom right coordinate of the region.
  */
-class ClickRegionStatement(topLeftCoordinate: Pair<FloatValue, FloatValue>,
-                           bottomRightCoordinate: Pair<FloatValue, FloatValue>)
-    : ClickStatement(Pair(FloatValue(0.0f), FloatValue(0.0f)))
+class ClickRegionStatement(topLeftCoordinate: Coordinate,
+                           bottomRightCoordinate: Coordinate) : ClickStatement(Coordinate())
 {
     /* Top left coordinate point of the clickable region. */
-    var mTopLeftCoordinate: Pair<FloatValue, FloatValue> = topLeftCoordinate
+    var mTopLeftCoordinate: Coordinate = topLeftCoordinate
 
     /* Bottom right coordinate point of the clickable region. */
-    var mBottomRightCoordinate: Pair<FloatValue, FloatValue> = bottomRightCoordinate
+    var mBottomRightCoordinate: Coordinate = bottomRightCoordinate
 
     constructor(parcel: Parcel) : this(
-            Pair(parcel.readParcelable(FloatValue::class.java.classLoader),
-                    parcel.readParcelable(FloatValue::class.java.classLoader)),   /* mTopLeftCoordinate */
-            Pair(parcel.readParcelable(FloatValue::class.java.classLoader),
-                    parcel.readParcelable(FloatValue::class.java.classLoader))    /* mBottomRightCoordinate */
+            parcel.readParcelable(Coordinate::class.java.classLoader)
+                    ?: throw NullPointerException("Parcel Error: $TAG (mTopLeftCoordinate)"),       /* mTopLeftCoordinate */
+            parcel.readParcelable(Coordinate::class.java.classLoader)
+                    ?: throw NullPointerException("Parcel Error: $TAG (mBottomRightCoordinate)")    /* mBottomRightCoordinate */
     )
 
     /**
@@ -36,7 +36,6 @@ class ClickRegionStatement(topLeftCoordinate: Pair<FloatValue, FloatValue>,
     override fun execute()
     {
         mClickCoordinate = selectRandomCoordinate()
-
         super.execute()
     }
 
@@ -46,19 +45,23 @@ class ClickRegionStatement(topLeftCoordinate: Pair<FloatValue, FloatValue>,
      *
      * @return A random coordinate point in the region.
      */
-    private fun selectRandomCoordinate(): Pair<Float, Float>
+    private fun selectRandomCoordinate(): Coordinate
     {
         val random = Random()
 
         /* Select a random point on the x-axis of the region. */
-        val randomXCoordinate = mTopLeftCoordinate.first +
-                ((mBottomRightCoordinate.first - mTopLeftCoordinate.first) * random.nextFloat())
+        val randomXCoordinate: Float = mTopLeftCoordinate.mXCoordinate.mFloatValue +
+                ((mBottomRightCoordinate.mXCoordinate.mFloatValue
+                        - mTopLeftCoordinate.mXCoordinate.mFloatValue)
+                        * random.nextFloat())
 
         /* Select a random point on the y-axis of the region. */
-        val randomYCoordinate = mTopLeftCoordinate.second +
-                ((mBottomRightCoordinate.second - mTopLeftCoordinate.second) * random.nextFloat())
+        val randomYCoordinate: Float = mTopLeftCoordinate.mYCoordinate.mFloatValue +
+                ((mBottomRightCoordinate.mYCoordinate.mFloatValue
+                        - mTopLeftCoordinate.mYCoordinate.mFloatValue)
+                        * random.nextFloat())
 
-        return Pair(randomXCoordinate, randomYCoordinate)
+        return Coordinate(FloatValue(randomXCoordinate), FloatValue(randomYCoordinate))
     }
 
     override fun printDebugLog()
@@ -68,17 +71,14 @@ class ClickRegionStatement(topLeftCoordinate: Pair<FloatValue, FloatValue>,
 
     override fun toString(): String
     {
-        return "Clicking in region: " + mTopLeftCoordinate.toString() +
-                " to " + mBottomRightCoordinate.toString()
+        return "Clicking in region: $mTopLeftCoordinate to $mBottomRightCoordinate"
     }
 
     /** Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)
     {
-        parcel.writeParcelable(mTopLeftCoordinate.first, flags)
-        parcel.writeParcelable(mTopLeftCoordinate.second, flags)
-        parcel.writeParcelable(mBottomRightCoordinate.first, flags)
-        parcel.writeParcelable(mBottomRightCoordinate.second, flags)
+        parcel.writeParcelable(mTopLeftCoordinate, flags)
+        parcel.writeParcelable(mBottomRightCoordinate, flags)
     }
 
     override fun describeContents(): Int

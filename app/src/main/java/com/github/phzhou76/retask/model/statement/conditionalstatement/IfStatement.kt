@@ -22,10 +22,10 @@ open class IfStatement(trueCondition: EqualityOperation?, trueBlock: StatementBl
 
     constructor(parcel: Parcel) : this(
             parcel.readParcelable(EqualityOperation::class.java.classLoader)
-                    ?: throw NullPointerException("Parcel Error: IfStatement (mTrueCondition)"),    /* mTrueCondition */
+                    ?: throw NullPointerException("Parcel Error: $TAG (mTrueCondition)"),    /* mTrueCondition */
             parcel.readParcelable(StatementBlock::class.java.classLoader)
-                    ?: throw NullPointerException("Parcel Error: IfStatement (mTrueBlock)"),        /* mTrueBlock */
-            parcel.readParcelable(IfStatement::class.java.classLoader)                              /* mElseIfStatement */
+                    ?: throw NullPointerException("Parcel Error: $TAG (mTrueBlock)"),        /* mTrueBlock */
+            parcel.readParcelable(IfStatement::class.java.classLoader)                       /* mElseIfStatement */
     )
 
     /**

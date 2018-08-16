@@ -5,7 +5,7 @@ import android.graphics.Path
 import android.os.Parcel
 import android.os.Parcelable
 import android.util.Log
-import com.github.phzhou76.retask.model.value.numericvalue.FloatValue
+import com.github.phzhou76.retask.model.value.Coordinate
 import com.github.phzhou76.retask.service.TaskAccessibilityService
 
 /**
@@ -13,10 +13,10 @@ import com.github.phzhou76.retask.service.TaskAccessibilityService
  *
  * @constructor Creates a ClickStatement that clicks at the given coordinate point.
  */
-open class ClickStatement(clickCoordinate: Pair<FloatValue, FloatValue>) : Statement()
+open class ClickStatement(clickCoordinate: Coordinate) : Statement()
 {
     /* Coordinate point to click at. */
-    open var mClickCoordinate: Pair<FloatValue, FloatValue> = clickCoordinate
+    open var mClickCoordinate: Coordinate = clickCoordinate
         set(value)
         {
             field = value
@@ -30,8 +30,8 @@ open class ClickStatement(clickCoordinate: Pair<FloatValue, FloatValue>) : State
     private lateinit var mGestureDescription: GestureDescription
 
     constructor(parcel: Parcel) : this(
-            Pair(parcel.readParcelable<FloatValue>(FloatValue::class.java.classLoader),
-                    parcel.readParcelable<FloatValue>(FloatValue::class.java.classLoader))    /* mClickCoordinate */
+            parcel.readParcelable<Coordinate>(Coordinate::class.java.classLoader)
+                    ?: throw NullPointerException("Parcel Error: $TAG (mClickCoordinate)")  /* mClickCoordinate */
     )
 
     /**
@@ -56,7 +56,7 @@ open class ClickStatement(clickCoordinate: Pair<FloatValue, FloatValue>) : State
 
     override fun toString(): String
     {
-        return "Click at: " + mClickCoordinate.toString()
+        return "Click at: $mClickCoordinate"
     }
 
     /**
@@ -69,8 +69,8 @@ open class ClickStatement(clickCoordinate: Pair<FloatValue, FloatValue>) : State
 
         /* Only one point on the path for a single click. */
         val inputPath = Path()
-        inputPath.moveTo(mClickCoordinate.first.mFloatValue,
-                mClickCoordinate.second.mFloatValue)
+        inputPath.moveTo(mClickCoordinate.mXCoordinate.mFloatValue,
+                mClickCoordinate.mYCoordinate.mFloatValue)
 
         /* Click should occur immediately. */
         val gestureStrokeDescription = GestureDescription.StrokeDescription(inputPath,
@@ -85,8 +85,7 @@ open class ClickStatement(clickCoordinate: Pair<FloatValue, FloatValue>) : State
     /** Parcelable implementation. */
     override fun writeToParcel(parcel: Parcel, flags: Int)
     {
-        parcel.writeParcelable(mClickCoordinate.first, flags)
-        parcel.writeParcelable(mClickCoordinate.second, flags)
+        parcel.writeParcelable(mClickCoordinate, flags)
     }
 
     override fun describeContents(): Int
