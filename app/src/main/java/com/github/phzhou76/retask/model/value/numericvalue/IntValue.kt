@@ -9,7 +9,9 @@ open class IntValue(intValue: Int) : NumericValue(ValueType.INT)
 {
     override var mValueName: String = "Integer Value"
 
-    var mIntValue: Int = intValue
+    open var mIntValue: Int = intValue
+
+    constructor() : this(0)
 
     constructor(parcel: Parcel) : this(
             parcel.readInt()    /* mIntValue */

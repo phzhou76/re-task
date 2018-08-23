@@ -9,7 +9,9 @@ open class FloatValue(floatValue: Float) : NumericValue(ValueType.FLOAT)
 {
     override var mValueName: String = "Float Value"
 
-    var mFloatValue: Float = floatValue
+    open var mFloatValue: Float = floatValue
+
+    constructor() : this(0.0f)
 
     constructor(parcel: Parcel) : this(
             parcel.readFloat()  /* mFloatValue */

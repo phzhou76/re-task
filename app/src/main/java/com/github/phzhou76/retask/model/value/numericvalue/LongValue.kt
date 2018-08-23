@@ -9,7 +9,9 @@ open class LongValue(longValue: Long) : NumericValue(ValueType.LONG)
 {
     override var mValueName: String = "Long Value"
 
-    var mLongValue: Long = longValue
+    open var mLongValue: Long = longValue
+
+    constructor() : this(0L)
 
     constructor(parcel: Parcel) : this(
             parcel.readLong()       /* mLongValue */

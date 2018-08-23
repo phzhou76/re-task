@@ -8,7 +8,9 @@ open class BooleanValue(booleanValue: Boolean) : Value(ValueType.BOOLEAN)
 {
     override var mValueName: String = "Boolean Value"
 
-    var mBooleanValue: Boolean = booleanValue
+    open var mBooleanValue: Boolean = booleanValue
+
+    constructor() : this(true)
 
     constructor(parcel: Parcel) : this(
             (parcel.readInt() == 1) /* mBooleanValue */

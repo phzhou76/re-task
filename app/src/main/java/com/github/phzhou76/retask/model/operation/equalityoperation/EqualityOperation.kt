@@ -48,5 +48,5 @@ abstract class EqualityOperation(leftValue: Value?, rightValue: Value?)
      *
      * @return The result of the operation, as a boolean value.
      */
-    abstract fun evaluateBooleanOperation(): BooleanValue
+    protected abstract fun evaluateBooleanOperation(): BooleanValue
 }

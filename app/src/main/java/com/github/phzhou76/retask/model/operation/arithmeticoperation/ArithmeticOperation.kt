@@ -88,7 +88,7 @@ abstract class ArithmeticOperation(leftValue: NumericValue?, rightValue: Numeric
      *
      * @return The result of the operation, as a float value.
      */
-    abstract fun evaluateFloatOperation(leftValue: NumericValue,
+    protected abstract fun evaluateFloatOperation(leftValue: NumericValue,
                                         rightValue: NumericValue): FloatValue
 
     /**
@@ -99,7 +99,7 @@ abstract class ArithmeticOperation(leftValue: NumericValue?, rightValue: Numeric
      *
      * @return The result of the operation, as a long value.
      */
-    abstract fun evaluateLongOperation(leftValue: NumericValue,
+    protected abstract fun evaluateLongOperation(leftValue: NumericValue,
                                        rightValue: NumericValue): LongValue
 
     /**
@@ -110,7 +110,7 @@ abstract class ArithmeticOperation(leftValue: NumericValue?, rightValue: Numeric
      *
      * @return The result of the operation, as an integer value.
      */
-    abstract fun evaluateIntOperation(leftValue: NumericValue,
+    protected abstract fun evaluateIntOperation(leftValue: NumericValue,
                                       rightValue: NumericValue): IntValue
 
     companion object
